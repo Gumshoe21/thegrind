@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   *,
   *::after,
@@ -10,17 +9,35 @@
     padding: 0;
     margin: 0;
   }
-body {
+  body {
     display: border-box;
   }
-.hero {
+  .hero {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+  }
+  .hero::before {
+    content: '';
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/hero.jpg');
+    background-size: cover;
+    background-position: center center;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+}
+
+.bakery {
   position: relative;
-  height: 100vh;
+  height: 400px;
   width: 100vw;
 }
-.hero::before {
-  content: "";
-  background: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('./../public/img/hero.jpg');
+.bakery::before {
+  content: '';
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/baked-goods.jpeg');
   background-size: cover;
   background-position: center center;
   position: absolute;
@@ -28,5 +45,4 @@ body {
   right: 0px;
   bottom: 0px;
   left: 0px;
-}
 }
