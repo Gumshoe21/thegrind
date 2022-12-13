@@ -9,25 +9,29 @@
     padding: 0;
     margin: 0;
   }
+
   body {
     display: border-box;
   }
-  .hero {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-  }
-  .hero::before {
-    content: '';
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/hero.jpg');
-    background-size: cover;
-    background-position: center center;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-  }
+}
+
+/* Misc */
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+}
+
+.hero::before {
+  content: '';
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/hero.jpg');
+  background-size: cover;
+  background-position: center center;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
 }
 
 .bakery {
@@ -35,6 +39,7 @@
   height: 400px;
   width: 100vw;
 }
+
 .bakery::before {
   content: '';
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/baked-goods.jpeg');

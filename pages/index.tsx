@@ -1,11 +1,28 @@
 import Image from 'next/image'
-// import Siema from 'siema';
 import { Jost } from '@next/font/google'
-import YelpReview from './../components/Home/Yelp/YelpReview.tsx'
+import YelpReview from '@home/Yelp/YelpReview'
+
+import { motion, useAnimation } from 'framer-motion'
+import { useInView } from 'react-intersection-observer'
+import { useEffect } from 'react'
 
 const jost = Jost({ subsets: ['latin'] })
-
+const boxVariant = {
+  visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
+  hidden: { opacity: 0, scale: 0 },
+}
 const Home = () => {
+  const control = useAnimation()
+  const [ref, inView] = useInView()
+
+  useEffect(() => {
+    if (inView) {
+      control.start('visible')
+    } else {
+      control.start('hidden')
+    }
+  }, [control, inView])
+
   return (
     <main>
       {/* HERO */}
@@ -18,7 +35,7 @@ const Home = () => {
 
       {/* ABOUT ME SNIPPET */}
       <section className='flex flex-col items-center justify-center text-center py-16 text-xl font-serif gap-8 bg-[rgb(28,28,28,0.03)] text-[#160F07]'>
-        <div className='uppercase font-bold tracking-[0.3rem]'>It all starts in the kitchen.</div>
+        <motion.div ref={ref} variants={boxVariant} initial="hidden" animate={control} className='uppercase font-bold tracking-[0.3rem]'>It all starts in the kitchen.</motion.div>
         <p className='tracking-[0.2rem]'>
           <span className='font-bold'>The Grind</span> is a family owned and operated bakery and cafe based in Sherman Oaks, CA.<br></br>
           All our delicious pastries and baked goods are made in-house and are served fresh,<br></br>
@@ -33,7 +50,7 @@ const Home = () => {
 
       {/* YELP */}
       <section className={`py-20 ${jost.className} gap-12 flex flex-col items-center justify-center text-center bg-primary-900 text-white px-20`}>
-        <div className='flex flex-col gap-4 text-xl font-serif items-center'>
+        <div className='flex flex-col gap-4 font-serif items-center'>
           <Image src='/img/yelp-logo.svg' alt='Headshot' height='175' width='175' className='' />
         </div>
         <div className='flex items-center justify-center gap-20'>
