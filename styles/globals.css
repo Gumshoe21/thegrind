@@ -11,9 +11,8 @@
   }
 
   body {
-    box-sizing: border-box;
-    display: flex;
-    max-width: 100vw;
+    min-height: 100vh;
+    width: -webkit-fill-available;
   }
 }
 
@@ -52,4 +51,10 @@
   right: 0px;
   bottom: 0px;
   left: 0px;
+  transition: all;
+  z-index: -1;
+  transition: transform 0.5s ease-in-out;
+}
+.bakery:hover::before {
+  transform: scale(1.1);
 }

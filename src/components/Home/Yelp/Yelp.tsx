@@ -35,13 +35,14 @@ const Yelp = () => {
   }, [control, inView])
 
   return (
-    <section className={`py-16 ${jost.className} gap-20 flex flex-col items-center justify-center text-center bg-primary-900 text-white px-20`}>
-      <div className='flex flex-col  font-serif items-center'>
-        <Image src='/img/yelp-logo.svg' alt='Headshot' height='175' width='175' className='' />
+    <section
+      className={`py-16 ${jost.className} gap-20 flex flex-col items-center justify-center text-center bg-gradient-to-t from-[#140904] to-[#291810] bg-[linear-gradient(174deg, rgba(35,24,11,1) 0%, rgba(97,74,48,0.9311163895486936) 84%)] text-white px-20`}
+    >
+      <div className='flex flex-col md:flex-row justify-center content-center gap-8  font-serif items-center'>
+        <header className={`${jost.className} font-light pt-6 font-sans tracking-wider uppercase text-3xl`}>People love us on</header>
+        <Image src='/img/yelp-logo.svg' alt='Headshot' height='200' width='200' className='' />
       </div>
       <div className='flex flex-col md:flex-row items-center justify-center gap-20'>
-        {/*<motion.div ref={ref} variants={boxVariant} initial='hidden' animate={control} className='flex items-center justify-center gap-20'>
-         */}
         <motion.div variants={variants.first} initial='hidden' animate={control} className=''>
           <YelpReview name='Fiona Martinez' src='/img/headshot-1.jpeg' height='175' width='175' className='rounded-full border-white border-2'>
             &quot;Some of the best coffee I&apos;ve ever tasted. Great place to study, too.&quot;
