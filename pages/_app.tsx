@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
 
+import 'tailwindcss/tailwind.css';
 import Head from 'next/head'
 import Navbar from '../src/components/ui/Navbar'
 import type { AppProps } from 'next/app'
