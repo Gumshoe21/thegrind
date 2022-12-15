@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useCallback, useEffect } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
@@ -11,89 +11,98 @@ const sortOptions = [
   { name: 'Price: High to Low', href: '#', current: false },
 ]
 const subCategories = [
-  { name: 'Totes', href: '#' },
-  { name: 'Backpacks', href: '#' },
-  { name: 'Travel Bags', href: '#' },
-  { name: 'Hip Bags', href: '#' },
-  { name: 'Laptop Sleeves', href: '#' },
+  { name: 'Cookies', href: '#' },
+  { name: 'Pastries', href: '#' },
+  { name: 'Cakes', href: '#' },
+  { name: 'Pies', href: '#' },
 ]
-const filters = [
-  {
-    id: 'color',
-    name: 'Color',
-    options: [
-      { value: 'white', label: 'White', checked: false },
-      { value: 'beige', label: 'Beige', checked: false },
-      { value: 'blue', label: 'Blue', checked: true },
-      { value: 'brown', label: 'Brown', checked: false },
-      { value: 'green', label: 'Green', checked: false },
-      { value: 'purple', label: 'Purple', checked: false },
-    ],
-  },
-  {
-    id: 'category',
-    name: 'Category',
-    options: [
-      { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-      { value: 'sale', label: 'Sale', checked: false },
-      { value: 'travel', label: 'Travel', checked: true },
-      { value: 'organization', label: 'Organization', checked: false },
-      { value: 'accessories', label: 'Accessories', checked: false },
-    ],
-  },
-  {
-    id: 'size',
-    name: 'Size',
-    options: [
-      { value: '2l', label: '2L', checked: false },
-      { value: '6l', label: '6L', checked: false },
-      { value: '12l', label: '12L', checked: false },
-      { value: '18l', label: '18L', checked: false },
-      { value: '20l', label: '20L', checked: false },
-      { value: '40l', label: '40L', checked: true },
-    ],
-  },
-]
+
 const products = [
   {
     id: 1,
-    name: 'Earthen Bottle',
+    name: 'Chocolate Chip Cookies',
     href: '#',
-    price: '$48',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+    category: 'cookies',
+    price: '$14',
+    imageSrc: 'https://www.recipetineats.com/wp-content/uploads/2020/06/Byron-Bay-Chocolate-Chip-Cookies_8.jpg?resize=889,889',
     imageAlt: 'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
   },
   {
     id: 2,
-    name: 'Nomad Tumbler',
+    name: 'Oatmeal Raisin Cookies',
     href: '#',
-    price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
+    category: 'cookies',
+    price: '$14',
+    imageSrc: 'https://www.recipetineats.com/wp-content/uploads/2016/07/Oatmeal-Raisin-Cookies_1.jpg?resize=889,889',
     imageAlt: 'Olive drab green insulated bottle with flared screw lid and flat top.',
   },
   {
     id: 3,
-    name: 'Focus Paper Refill',
+    name: 'Apple Pie',
     href: '#',
-    price: '$89',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
+    category: 'pies',
+    price: '$16',
+    imageSrc: 'https://www.recipetineats.com/wp-content/uploads/2022/11/Apple-Pie_6.jpg?resize=889,889',
     imageAlt: 'Person using a pen to cross a task off a productivity paper card.',
   },
   {
     id: 4,
-    name: 'Machined Mechanical Pencil',
+    name: 'Pumpkin Pie',
     href: '#',
+    category: 'pies',
     price: '$35',
-    imageSrc: 'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+    imageSrc: 'https://www.recipetineats.com/wp-content/uploads/2019/11/Pumpkin-Pie_2.jpg?resize=889,889',
     imageAlt: 'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
-  // More products...
 ]
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 function Order() {
+  const [filters, setFilters] = useState({
+    categories: {
+      cookies: {
+        label: 'Cookies',
+        checked: false,
+        value: 'cookies',
+      },
+      pies: {
+        label: 'Pies',
+        checked: false,
+        value: 'pies',
+      },
+    },
+  })
+
+  const [filtered, setFiltered] = useState([])
+
+  const handleCheckbox = (e) => {
+    setFilters((prevState) => {
+      return {
+        categories: {
+          ...prevState.categories,
+          [e.target.value]: {
+            ...prevState.categories[e.target.value],
+            checked: e.target.checked,
+          },
+        },
+      }
+    })
+    for (let f in filters.categories) {
+      if (!filters.categories[e.target.value]['checked'] === true) {
+        setFiltered((old) => [...old, filters.categories[e.target.value]['value']])
+      } else {
+        setFiltered((prevState) => [...prevState.filter((el) => el !== filters.categories[e.target.value]['value'])])
+      }
+    }
+  }
+
+  console.log(filtered)
+  // find all categories that have 'true' checked value
+
+  // create object from categories array that includes only products where the categories are true/checked.
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
   return (
@@ -145,17 +154,7 @@ function Order() {
 
                   {/* Filters */}
                   <form className='mt-4 border-t border-gray-200'>
-                    <h3 className='sr-only'>Categories</h3>
-                    <ul role='list' className='px-2 py-3 font-medium text-gray-900'>
-                      {subCategories.map((category) => (
-                        <li key={category.name}>
-                          <a href={category.href} className='block px-2 py-3'>
-                            {category.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-
+                    {/*
                     {filters.map((section) => (
                       <Disclosure as='div' key={section.id} className='border-t border-gray-200 px-4 py-6'>
                         {({ open }) => (
@@ -170,7 +169,7 @@ function Order() {
                             </h3>
                             <Disclosure.Panel className='pt-6'>
                               <div className='space-y-6'>
-                                {section.options.map((option, optionIdx) => (
+                                {Object.values(section.options).map((option, optionIdx) => (
                                   <div key={option.value} className='flex items-center'>
                                     <input
                                       id={`filter-mobile-${section.id}-${optionIdx}`}
@@ -191,6 +190,7 @@ function Order() {
                         )}
                       </Disclosure>
                     ))}
+*/}
                   </form>
                 </Dialog.Panel>
               </Transition.Child>
@@ -200,7 +200,7 @@ function Order() {
 
         <main className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <div className='flex items-baseline justify-between border-b border-gray-200 pt-24 pb-6'>
-            <h1 className='text-4xl font-bold tracking-tight text-gray-900'>New Arrivals</h1>
+            <h1 className='text-4xl font-bold tracking-tight text-gray-900'>Psst... the cookies are good.</h1>
 
             <div className='flex items-center'>
               <Menu as='div' className='relative inline-block text-left'>
@@ -258,26 +258,18 @@ function Order() {
             <h2 id='products-heading' className='sr-only'>
               Products
             </h2>
-
+            {/*********************************************************************************/}
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
               <form className='hidden lg:block'>
-                <h3 className='sr-only'>Categories</h3>
-                <ul role='list' className='space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900'>
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
-                    </li>
-                  ))}
-                </ul>
-
-                {filters.map((section) => (
+                {Object.entries(filters).map((section) => (
                   <Disclosure as='div' key={section.id} className='border-b border-gray-200 py-6'>
                     {({ open }) => (
                       <>
                         <h3 className='-my-3 flow-root'>
                           <Disclosure.Button className='flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500'>
-                            <span className='font-medium text-gray-900'>{section.name}</span>
+                            {/* FILTER TYPE NAME */}
+                            <span className='font-medium text-gray-900'>Categories</span>
                             <span className='ml-6 flex items-center'>
                               {open ? <MinusIcon className='h-5 w-5' aria-hidden='true' /> : <PlusIcon className='h-5 w-5' aria-hidden='true' />}
                             </span>
@@ -285,12 +277,14 @@ function Order() {
                         </h3>
                         <Disclosure.Panel className='pt-6'>
                           <div className='space-y-4'>
-                            {section.options.map((option, optionIdx) => (
+                            {Object.values(section[1]).map((option, optionIdx) => (
                               <div key={option.value} className='flex items-center'>
+                                {/* FILTER INPUT */}
                                 <input
                                   id={`filter-${section.id}-${optionIdx}`}
                                   name={`${section.id}[]`}
                                   defaultValue={option.value}
+                                  onChange={(e) => handleCheckbox(e)}
                                   type='checkbox'
                                   defaultChecked={option.checked}
                                   className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
@@ -312,21 +306,40 @@ function Order() {
               <div className='lg:col-span-3'>
                 <div className='h-96 rounded-lg border-4 border-dashed border-gray-200 lg:h-full'>
                   {/* /End replace */}
-
                   <div className='bg-white'>
                     <div className='mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8'>
                       <h2 className='sr-only'>Products</h2>
-
                       <div className='grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
-                        {products.map((product) => (
-                          <a key={product.id} href={product.href} className='group'>
-                            <div className='aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8'>
-                              <img src={product.imageSrc} alt={product.imageAlt} className='h-full w-full object-cover object-center group-hover:opacity-75' />
-                            </div>
-                            <h3 className='mt-4 text-sm text-gray-700'>{product.name}</h3>
-                            <p className='mt-1 text-lg font-medium text-gray-900'>{product.price}</p>
-                          </a>
-                        ))}
+                        {filtered.length === 0 &&
+                          products.map((product) => (
+                            <a key={product.id} href={product.href} className='group animate-[fadeIn_1s_linear] transition-all'>
+                              <div className='aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8'>
+                                <img
+                                  src={product.imageSrc}
+                                  alt={product.imageAlt}
+                                  className='h-full w-full object-cover object-center group-hover:opacity-75'
+                                />
+                              </div>
+                              <h3 className='mt-4 text-sm text-gray-700'>{product.name}</h3>
+                              <p className='mt-1 text-lg font-medium text-gray-900'>{product.price}</p>
+                            </a>
+                          ))}
+                        {filtered.length > 0 &&
+                          products
+                            .filter((f) => filtered.includes(f.category))
+                            .map((product) => (
+                              <a key={product.id} href={product.href} className='group bg-blue-200 animate-[fadeIn_1s_linear] transition-all'>
+                                <div className='aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8'>
+                                  <img
+                                    src={product.imageSrc}
+                                    alt={product.imageAlt}
+                                    className='h-full w-full object-cover object-center group-hover:opacity-75'
+                                  />
+                                </div>
+                                <h3 className='mt-4 text-sm text-gray-700'>{product.name}</h3>
+                                <p className='mt-1 text-lg font-medium text-gray-900'>{product.price}</p>
+                              </a>
+                            ))}
                       </div>
                     </div>
                   </div>
