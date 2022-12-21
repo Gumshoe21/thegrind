@@ -3,6 +3,7 @@
     "target": "es5",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,7 +22,8 @@
       "@store/*": ["./src/store/index.ts"],
       "@actions/*": ["./src/store/actions/*"],
       "@utils/*": ["./src/utils/*"],
-      "@imgs/*": ["./public/img/*"]
+      "@imgs/*": ["./public/img/*"],
+      "@data/*": ["./src/data/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
