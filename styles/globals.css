@@ -12,6 +12,7 @@
 
   body {
     min-height: 100vh;
+    min-width: 100vw;
     width: -webkit-fill-available;
   }
 }
@@ -28,6 +29,10 @@
   background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/hero.jpg');
   background-size: cover;
   background-position: center center;
+  background-blend-mode: screen;
+  /* background-color: rgba(155, 300, 184, 0.29);*/
+  background-color: rgba(22, 15, 7, 9);
+
   position: absolute;
   top: 0px;
   right: 0px;
@@ -39,6 +44,8 @@
   position: relative;
   height: 400px;
   width: 100vw;
+
+  overflow-x: none;
 }
 
 .bakery::before {
@@ -47,6 +54,7 @@
   background-size: cover;
   background-position: center center;
   position: absolute;
+  width: 100%;
   top: 0px;
   right: 0px;
   bottom: 0px;
@@ -57,8 +65,8 @@
 }
 .bakery:hover::before {
   transform: scale(1.1);
+  overflow-x: none;
 }
-
 
 @keyframes in-out {
   0% {
