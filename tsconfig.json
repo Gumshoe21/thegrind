@@ -16,15 +16,16 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@ui/*": ["./src/components/ui/*"],
-      "@home/*": ["./src/components/Home/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@store/*": ["./src/store/index.ts"],
-      "@actions/*": ["./src/store/actions/*"],
-      "@utils/*": ["./src/utils/*"],
-      "@imgs/*": ["./public/img/*"],
-      "@data/*": ["./src/data/*"]
-    }
+			"@ui/*": ["./src/components/ui/*"],
+			"@home/*": ["./src/components/Home/*"],
+			"@products/*": ["./src/components/Products/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@store/*": ["./src/store/index.ts"],
+			"@actions/*": ["./src/store/actions/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@imgs/*": ["./public/img/*"],
+			"@data/*": ["./src/data/*"]
+		}
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
