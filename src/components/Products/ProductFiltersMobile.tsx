@@ -2,15 +2,19 @@ import { Fragment, useState, useCallback, useEffect } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { sortOptions, subCategories, products } from '@data/order'
+import { selectMobileFiltersOpen, setMobileFiltersOpen } from '@slices/productSlice'
+import { useSelector, useDispatch } from 'react-redux'
 
 const ProductFiltersMobile = () => {
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+  const mobileFiltersOpen = useSelector(selectMobileFiltersOpen)
 
+  console.log(mobileFiltersOpen)
+  const dispatch = useDispatch()
   return (
     <>
       {/* The 'show' prop controls whether the children should be shown or hidden */}
       <Transition.Root show={mobileFiltersOpen} as={Fragment}>
-        <Dialog as='div' className='relative z-40 lg:hidden' onClose={setMobileFiltersOpen}>
+        <Dialog as='div' className='relative z-40 lg:hidden' onClose={() => dispatch(setMobileFiltersOpen(false))}>
           {/* Semi-opaque div that covers rest of screen while mobile filters menu is open. */}
           {/* Transition is set as a Fragment to avoid adding nodes to the DOM */}
           <Transition.Child
@@ -44,7 +48,7 @@ const ProductFiltersMobile = () => {
                   <button
                     type='button'
                     className='-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400'
-                    onClick={() => setMobileFiltersOpen(false)}
+                    onClick={() => dispatch(setMobileFiltersOpen(false))}
                   >
                     <span className='sr-only'>Close menu</span>
                     <XMarkIcon className='h-6 w-6' aria-hidden='true' />
