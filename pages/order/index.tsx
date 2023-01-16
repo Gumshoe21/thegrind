@@ -14,37 +14,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-function AllProductsPage() {
+function AllProductsPage(props) {
   const router = useRouter()
+  const { products } = props
+  console.log(products)
 
-  console.log(router.query)
+  // console.log(router.query)
   const { breakpoint, windowSize } = useBreakpoint()
-  {
-    /** 
-	const handleCheckbox = e => {
-		setFilters(prevState => {
-			return {
-				categories: {
-					...prevState.categories,
-					[e.target.value]: {
-						...prevState.categories[e.target.value],
-						checked: e.target.checked
-					}
-				}
-			}
-		})
-		console.log(filters)
-		// Find all categories where checked = true, then set filters to those categories.
-		for (let f in filters.categories) {
-			if (!filters.categories[e.target.value]['checked'] === true) {
-				setFiltered(old => [...old, filters.categories[e.target.value]['value']])
-			} else {
-				setFiltered(prevState => [...prevState.filter(el => el !== filters.categories[e.target.value]['value'])])
-			}
-		}
-	}
-*/
-  }
+
   return (
     <div className='bg-white'>
       <div>
@@ -62,7 +39,7 @@ function AllProductsPage() {
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
               <ProductFilters />
-              <ProductGrid />
+              <ProductGrid products={products}/>
             </div>
           </section>
         </main>
@@ -70,5 +47,25 @@ function AllProductsPage() {
     </div>
   )
 }
+export async function getStaticProps() {
+  const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
 
+  const data = await res.json()
+
+  const products = []
+
+  for (const key in data) {
+    products.push({
+      id: key,
+      ...data[key],
+    })
+  }
+
+  return {
+    props: {
+      products,
+    },
+    revalidate: 60,
+  }
+}
 export default AllProductsPage
