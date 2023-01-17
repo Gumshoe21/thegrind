@@ -9,8 +9,9 @@ import ProductFiltersMobile from '@products/ProductFiltersMobile'
 import ProductGrid from '@products/ProductGrid'
 import ProductsMenu from '@products/ProductsMenu'
 
-const ProductFilters = () => {
+const ProductFilters = (props) => {
   const { breakpoint, windowSize } = useBreakpoint()
+
   return (
     <form className='hidden lg:block'>
       <Disclosure as='div' className='border-b border-gray-200 py-6'>
@@ -36,21 +37,24 @@ const ProductFilters = () => {
             >
               <Disclosure.Panel className='pt-6'>
                 <div className='space-y-4'>
-                  <div className='flex items-center'>
-                    {/* FILTER INPUT */}
-                    <input
-                      id={`filter-${2}-${2}`}
-                      name='sup'
-                      defaultValue='true'
-                      onChange={(e) => console.log(e)}
-                      type='checkbox'
-                      defaultChecked={true}
-                      className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                    />
-                    <label htmlFor={`filter-${2}-${2}`} className='ml-3 text-sm text-gray-600'>
-                      'pies'
-                    </label>
-                  </div>
+                  {props.categories.map((c) => (
+                    <div className='flex items-center'>
+                      <>
+                        <input
+                          id={`filter-${c}`}
+                          name={`${c}`}
+                          defaultValue={c}
+                          onChange={(e) => console.log(c)}
+                          type='checkbox'
+                          defaultChecked={true}
+                          className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                        />
+                        <label htmlFor={`filter-${c}`} className='ml-3 text-sm text-gray-600'>
+                          {c[0].toUpperCase() + c.slice(1)}
+                        </label>
+                      </>
+                    </div>
+                  ))}
                 </div>
               </Disclosure.Panel>
             </Transition>

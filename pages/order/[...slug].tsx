@@ -1,26 +1,10 @@
-import { Fragment, useState, useCallback, useEffect } from 'react'
-import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
-import { useRouter } from 'next/router'
-import { XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
-import useBreakpoint from '@utils/use-breakpoint'
-import { sortOptions, subCategories, products } from '@data/order'
 import ProductFiltersMobile from '@products/ProductFiltersMobile'
 import ProductGrid from '@products/ProductGrid'
 import ProductsMenu from '@products/ProductsMenu'
 import ProductFilters from '@products/ProductFilters'
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-
-function AllProductsPage(props) {
-  const router = useRouter()
-  const { products, categories } = props
-
-  // console.log(router.query)
-  const { breakpoint, windowSize } = useBreakpoint()
-
+const FilteredProducts = (props) => {
+  const { filteredProducts } = props
   return (
     <div className='bg-white'>
       <div>
@@ -37,8 +21,8 @@ function AllProductsPage(props) {
             {/*********************************************************************************/}
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
-              <ProductFilters categories={categories} />
-              <ProductGrid products={products} />
+              <ProductFilters />
+              <ProductGrid products={filteredProducts} />
             </div>
           </section>
         </main>
@@ -46,7 +30,14 @@ function AllProductsPage(props) {
     </div>
   )
 }
-export async function getStaticProps() {
+
+export async function getServerSideProps(context) {
+  const { params } = context
+
+  console.log(params.slug[0])
+  const filterData = params.slug[0].split(',')
+  console.log(filterData)
+
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
 
   const data = await res.json()
@@ -60,21 +51,13 @@ export async function getStaticProps() {
     })
   }
 
-  const categories: string[] = []
+  let filteredProducts = products.filter((p) => filterData.includes(p.category))
 
-  for (const product of products) {
-    if (!categories.includes(product.category)) {
-      categories.push(product.category)
-    }
-  }
-
-  console.log(categories)
   return {
     props: {
-      products,
-      categories,
+      filteredProducts,
     },
-    revalidate: 60,
   }
 }
-export default AllProductsPage
+
+export default FilteredProducts
