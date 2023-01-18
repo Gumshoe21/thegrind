@@ -16,10 +16,29 @@ function classNames(...classes) {
 
 function AllProductsPage(props) {
   const router = useRouter()
+
   const { products, categories } = props
 
-  // console.log(router.query)
   const { breakpoint, windowSize } = useBreakpoint()
+
+  let queryUrl = ''
+  let chosenFilters: string[] = []
+
+  const handleFilters = (checkboxes) => {
+    // console.log(router.query.slug)
+
+    for (let checkbox in checkboxes) {
+      if (checkboxes[checkbox] && !chosenFilters.includes(checkbox)) {
+        chosenFilters.push(checkbox)
+      } else if (!checkboxes[checkbox]) {
+        chosenFilters = chosenFilters.filter((c) => c !== checkbox) 
+      }
+    }
+
+    console.log(chosenFilters)
+    const params = chosenFilters.join(',')
+    router.push(`/order/categories/chosen&=${params}`)
+  }
 
   return (
     <div className='bg-white'>
@@ -37,7 +56,7 @@ function AllProductsPage(props) {
             {/*********************************************************************************/}
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
-              <ProductFilters categories={categories} />
+              <ProductFilters categories={props.categories} onChange={handleFilters} />
               <ProductGrid products={products} />
             </div>
           </section>
@@ -68,7 +87,6 @@ export async function getStaticProps() {
     }
   }
 
-  console.log(categories)
   return {
     props: {
       products,

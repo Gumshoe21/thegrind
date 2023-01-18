@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux'
 const ProductFiltersMobile = () => {
   const mobileFiltersOpen = useSelector(selectMobileFiltersOpen)
 
-  console.log(mobileFiltersOpen)
   const dispatch = useDispatch()
   return (
     <>
@@ -77,7 +76,6 @@ const ProductFiltersMobile = () => {
                                 id={`filter-${2}-${2}`}
                                 name={'test'}
                                 defaultValue='true'
-                                onChange={(e) => console.log(e)}
                                 type='checkbox'
                                 defaultChecked={true}
                                 className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'

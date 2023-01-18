@@ -1,10 +1,6 @@
 const ProductDetailPage = (props) => {
   const { product } = props
-  return (
-    <div>
-      {product.name}
-    </div>
-  )
+  return <div>sup</div>
 }
 
 export async function getStaticProps(context) {
@@ -41,6 +37,7 @@ export async function getStaticPaths() {
     products.push({
       id: key,
       ...data[key],
+      key,
     })
   }
 

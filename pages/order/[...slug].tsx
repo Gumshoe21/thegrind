@@ -1,10 +1,17 @@
 import ProductFiltersMobile from '@products/ProductFiltersMobile'
+import { useState } from 'react'
+import { useRouter } from 'next/router'
 import ProductGrid from '@products/ProductGrid'
 import ProductsMenu from '@products/ProductsMenu'
 import ProductFilters from '@products/ProductFilters'
 
 const FilteredProducts = (props) => {
-  const { filteredProducts } = props
+  const router = useRouter()
+
+  const handleFilters = (chosenFilters) => {
+    router.push(`/order/categories/chosen&=${chosenFilters.join(',')}`)
+  }
+
   return (
     <div className='bg-white'>
       <div>
@@ -21,8 +28,9 @@ const FilteredProducts = (props) => {
             {/*********************************************************************************/}
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
-              <ProductFilters />
-              <ProductGrid products={filteredProducts} />
+
+              <ProductFilters categories={props.categories} onChange={handleFilters} />
+              <ProductGrid products={props.products} />
             </div>
           </section>
         </main>
@@ -34,15 +42,13 @@ const FilteredProducts = (props) => {
 export async function getServerSideProps(context) {
   const { params } = context
 
-  console.log(params.slug[0])
-  const filterData = params.slug[0].split(',')
-  console.log(filterData)
+  let filterData = context.query.slug[1].split('=')[1].split(',')
 
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
 
   const data = await res.json()
 
-  const products = []
+  let products = []
 
   for (const key in data) {
     products.push({
@@ -51,11 +57,19 @@ export async function getServerSideProps(context) {
     })
   }
 
-  let filteredProducts = products.filter((p) => filterData.includes(p.category))
+  let categories = []
 
+  for (const product of products) {
+    if (!categories.includes(product.category)) {
+      categories.push(product.category)
+    }
+  }
+
+  products = products.filter((p) => filterData.includes(p.category))
   return {
     props: {
-      filteredProducts,
+      products,
+      categories,
     },
   }
 }
