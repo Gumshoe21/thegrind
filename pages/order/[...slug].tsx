@@ -43,7 +43,7 @@ export async function getServerSideProps(context) {
   const { params } = context
 
   let filterData = context.query.slug[1].split('=')[1].split(',')
-
+  console.log(filterData.join('') === '')
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
 
   const data = await res.json()
@@ -65,7 +65,11 @@ export async function getServerSideProps(context) {
     }
   }
 
-  products = products.filter((p) => filterData.includes(p.category))
+  if (filterData.join('') === '') {
+    products = products
+  } else {
+    products = products.filter((p) => filterData.includes(p.category))
+  }
   return {
     props: {
       products,

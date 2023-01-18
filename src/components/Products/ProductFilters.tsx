@@ -50,13 +50,12 @@ const ProductFilters = (props) => {
     if (e.target.checked && !arlenString.split(',').includes(e.target.name)) {
       arlenString += arlenString.length > 0 ? `,${e.target.name}` : `${e.target.name}`
     } else {
-      arlenString = 
-      arlenString
+      arlenString = arlenString
         .split(',')
         .filter((f) => f !== e.target.name)
         .join(',')
     }
-    console.log(arlenString)
+
     router.push(`/order/categories/chosen&=${arlenString}`)
     //    props.onChange(chosenFilters)
   }
