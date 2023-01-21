@@ -12,6 +12,13 @@ const FilteredProducts = (props) => {
     router.push(`/order/categories/chosen&=${chosenFilters.join(',')}`)
   }
 
+  if (props.hassError) {
+    return <div>error</div>
+  }
+
+  if (!props.products || props.products.length === 0) {
+    return <div>error</div>
+  }
   return (
     <div className='bg-white'>
       <div>
@@ -41,15 +48,20 @@ const FilteredProducts = (props) => {
 
 export async function getServerSideProps(context) {
   const { params } = context
+  const queryPath = params.slug
 
-  let filterData = context.query.slug[1].split('=')[1].split(',')
-  console.log(filterData.join('') === '')
+  let categoriesPath = queryPath[1] || null
+  let filterData = categoriesPath?.split('=')[1]?.split(',')
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
 
   const data = await res.json()
 
+  if (categoriesPath === undefined || filterData === undefined) {
+    return {
+      notFound: true,
+    }
+  }
   let products = []
-
   for (const key in data) {
     products.push({
       id: key,
