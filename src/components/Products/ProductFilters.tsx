@@ -11,53 +11,47 @@ import ProductsMenu from '@products/ProductsMenu'
 
 const ProductFilters = (props) => {
   const { breakpoint, windowSize } = useBreakpoint()
-
-  /*
-  for (let i = 0; i < props.categories.length; i++) {
-    initialFilterStates[props.categories[i]] = false
-  }
-*/
-  const [filterStates, setFilterStates] = useState([])
   const router = useRouter()
-  // let [chosenFilters, setChosenFilters] = useState([])
 
+  const [filterStates, setFilterStates] = useState([])
+
+  let initialCheckboxState = {}
+
+  useEffect(() => {
+    for (const c in props.categories) {
+      if (router.query.slug[1].split('=')[1].split(',').includes(props.categories[c])) {
+        initialCheckboxState[props.categories[c]] = true
+      } else {
+        initialCheckboxState[props.categories[c]] = false
+      }
+    }
+  }, [router.query.slug])
+
+  const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
+
+  console.log(checkboxState)
   function onChange(e) {
-    /*
-    console.log(e.target.checked)
-    if (e.target.checked === true) {
-      setFilterStates([...filterStates, e.target.name])
+    setCheckboxState({
+      ...checkboxState,
+      [e.target.name]: e.target.checked,
+    })
 
-      //  setChosenFilters((chosenFilters) => [...chosenFilters, e.target.name])
-      //  setChosenFilters((chosenFilters) => [...chosenFilters, e.target.name])
-    } else if (e.target.checked === false) {
-      // setChosenFilters((chosenFilters) => chosenFilters.filter((c) => c !== e.target.name))
-      setFilterStates((prev) => prev.filter((c) => c !== e.target.name))
-    }
-
-    console.log(filterStates)
-    //setFilterStates({ ...filterStates, [e.target.name]: e.target.checked })
-
-    const params = filterStates.join(',')
-    console.log(filterStates)
-*/
-
-    //    const params = filterStates.join(',')
-
-    let realSlug = router.query.slug[1].split('=')[1].split(',')
-    console.log(realSlug)
-    let arlenString = realSlug.join(',')
-
-    if (e.target.checked && !arlenString.split(',').includes(e.target.name)) {
-      arlenString += arlenString.length > 0 ? `,${e.target.name}` : `${e.target.name}`
+    console.log(checkboxState)
+    // E.g. ['pies', 'cookies']
+    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
+    // E.g. 'pies,cookies'
+    let categoriesStr = categoriesArr.join(',')
+    // Append category onto 'chosen' filter if the category is checked and the current list of categories doesn't include the category we are currently checking for
+    // (i.e., add the category only if it hasn't already been added.).
+    if (e.target.checked && !categoriesArr.includes(e.target.name)) {
+      categoriesStr += categoriesStr.length > 0 ? `,${e.target.name}` : `${e.target.name}`
     } else {
-      arlenString = arlenString
-        .split(',')
-        .filter((f) => f !== e.target.name)
-        .join(',')
+      // If the above condition isn't met, return a comma-separated string of categories that excludes the category we are currently checking for.
+      // Effectively fulfills the purpose of unchecking a category.
+      categoriesStr = categoriesArr.filter((f) => f !== e.target.name).join(',')
     }
-
-    router.push(`/order/categories/chosen&=${arlenString}`)
-    //    props.onChange(chosenFilters)
+    // Update the chosen param with the newly-filtered categories.
+    router.push(`/order/categories/chosen&=${categoriesStr}`)
   }
 
   return (
@@ -65,7 +59,8 @@ const ProductFilters = (props) => {
       <Disclosure as='div' className='border-b border-gray-200 py-6'>
         {({ open, close }) => (
           <>
-            {open && windowSize.width < 960 && close()}
+            {/**/}
+            {/* open && windowSize.width < 960 && close()*/}
             <h3 className='-my-3 flow-root'>
               <Disclosure.Button className='flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500'>
                 {/* FILTER TYPE NAME */}
@@ -91,8 +86,9 @@ const ProductFilters = (props) => {
                         <input
                           id={`filter-${c}`}
                           name={`${c}`}
-                          onClick={(e) => onChange(e)}
+                          onChange={(e) => onChange(e)}
                           type='checkbox'
+                          checked={checkboxState[c]}
                           className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                         />
                         <label htmlFor={`filter-${c}`} className='ml-3 text-sm text-gray-600'>
