@@ -4,11 +4,36 @@ import { MinusIcon, PlusIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { sortOptions, subCategories, products } from '@data/order'
 import { selectMobileFiltersOpen, setMobileFiltersOpen } from '@slices/productSlice'
 import { useSelector, useDispatch } from 'react-redux'
+import { useRouter } from 'next/router'
+import { selectCheckboxes, setCheckboxes } from '@slices/productSlice'
 
-const ProductFiltersMobile = () => {
+const ProductFiltersMobile = (props) => {
   const mobileFiltersOpen = useSelector(selectMobileFiltersOpen)
+  const checkboxes = useSelector(selectCheckboxes)
 
   const dispatch = useDispatch()
+  const router = useRouter()
+
+  let initialCheckboxState = {}
+
+  function onChange(e) {
+    dispatch(setCheckboxes(e.target.name))
+    // E.g. ['pies', 'cookies']
+    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
+    // E.g. 'pies,cookies'
+    let categoriesStr = categoriesArr.join(',')
+    // Append category onto 'chosen' filter if the category is checked and the current list of categories doesn't include the category we are currently checking for
+    // (i.e., add the category only if it hasn't already been added.).
+    if (e.target.checked && !categoriesArr.includes(e.target.name)) {
+      categoriesStr += categoriesStr.length > 0 ? `,${e.target.name}` : `${e.target.name}`
+    } else {
+      // If the above condition isn't met, return a comma-separated string of categories that excludes the category we are currently checking for.
+      // Effectively fulfills the purpose of unchecking a category.
+      categoriesStr = categoriesArr.filter((f) => f !== e.target.name).join(',')
+    }
+    // Update the chosen param with the newly-filtered categories.
+    router.push(`/order/categories/chosen&=${categoriesStr}`)
+  }
   return (
     <>
       {/* The 'show' prop controls whether the children should be shown or hidden */}
@@ -70,20 +95,23 @@ const ProductFiltersMobile = () => {
                         </h3>
                         <Disclosure.Panel className='pt-6'>
                           <div className='space-y-4'>
-                            <div key={2} className='flex items-center'>
-                              {/* FILTER INPUT */}
-                              <input
-                                id={`filter-${2}-${2}`}
-                                name={'test'}
-                                defaultValue='true'
-                                type='checkbox'
-                                defaultChecked={true}
-                                className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
-                              />
-                              <label htmlFor={`filter-${2}-${2}`} className='ml-3 text-sm text-gray-600'>
-                                Label
-                              </label>
-                            </div>
+                            {props.categories.map((c, i) => {
+                              return (
+                                <div className='flex items-center' key={i}>
+                                  <input
+                                    id={`filter-${c}`}
+                                    name={`${c}`}
+                                    onChange={(e) => onChange(e)}
+                                    type='checkbox'
+                                    checked={checkboxes[c]}
+                                    className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
+                                  />
+                                  <label htmlFor={`filter-${c}`} className='ml-3 text-sm text-gray-600'>
+                                    {c[0].toUpperCase() + c.slice(1)}
+                                  </label>
+                                </div>
+                              )
+                            })}
                           </div>
                         </Disclosure.Panel>
                       </>

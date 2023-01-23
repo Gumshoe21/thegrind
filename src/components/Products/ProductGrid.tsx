@@ -23,8 +23,8 @@ const ProductGrid = ({ products }) => {
                     <Image
                       src={`/img/products/${product.imageSrc}`}
                       alt={product.imageAlt}
-                      width={100}
-                      height={100}
+                      width='800'
+                      height='800'
                       className='h-full w-full object-cover object-center group-hover:opacity-75'
                     />
                   </div>

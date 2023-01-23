@@ -21,7 +21,7 @@ const FilteredProducts = (props) => {
     <div className='bg-white'>
       <div>
         {/* Mobile filters dialog */}
-        <ProductFiltersMobile />
+        <ProductFiltersMobile categories={props.categories}/>
         <main className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'>
           <ProductsMenu />
           <section aria-labelledby='products-heading' className='pt-6 pb-24'>
@@ -48,7 +48,7 @@ export async function getServerSideProps(context) {
 
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
   const data = await res.json()
-console.log(data)
+
   if (categoriesPath === undefined || filterData === undefined) {
     return {
       notFound: true,

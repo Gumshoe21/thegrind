@@ -8,35 +8,53 @@ import { sortOptions, subCategories, products } from '@data/order'
 import ProductFiltersMobile from '@products/ProductFiltersMobile'
 import ProductGrid from '@products/ProductGrid'
 import ProductsMenu from '@products/ProductsMenu'
+import { useSelector, useDispatch } from 'react-redux'
+import { selectCheckboxes, setCheckboxes } from '@slices/productSlice'
 
 const ProductFilters = (props) => {
+  const checkboxes = useSelector(selectCheckboxes)
+  const dispatch = useDispatch()
+
   const { breakpoint, windowSize } = useBreakpoint()
   const router = useRouter()
 
   const [filterStates, setFilterStates] = useState([])
 
   let initialCheckboxState = {}
-
+  /*
   useEffect(() => {
-    for (const c in props.categories) {
-      if (router.query.slug[1].split('=')[1].split(',').includes(props.categories[c])) {
-        initialCheckboxState[props.categories[c]] = true
+    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
+    for (let c in props.categories) {
+      if (router.query.slug[1].split('=')[1].split(',').includes(props.categories[c]) && categoriesArr !== '') {
+        dispatch(setCheckboxes(props.categories[c]))
       } else {
-        initialCheckboxState[props.categories[c]] = false
+        dispatch(setCheckboxes({ ...checkboxes, [checkboxes[props.categories[c]]]: false }))
+        // initialCheckboxState[props.categories[c]] = false
       }
     }
-  }, [router.query.slug,props.categories,initialCheckboxState])
+    //  }, [router.query.slug, props.categories, initialCheckboxState])
+  }, [dispatch, props.categories, router.query.slug])
+*/
+  // const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
 
-  const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
-
-  console.log(checkboxState)
+  console.log(checkboxes)
   function onChange(e) {
+    dispatch(setCheckboxes(e.target.name))
+
+    /*
     setCheckboxState({
       ...checkboxState,
       [e.target.name]: e.target.checked,
     })
-
-    console.log(checkboxState)
+*/
+    /*
+    dispatch(
+      setCheckboxes({
+        ...checkboxes,
+        [e.target.name]: e.target.checked,
+      })
+    )
+*/
     // E.g. ['pies', 'cookies']
     const categoriesArr = router.query.slug[1].split('=')[1].split(',')
     // E.g. 'pies,cookies'
@@ -88,7 +106,7 @@ const ProductFilters = (props) => {
                           name={`${c}`}
                           onChange={(e) => onChange(e)}
                           type='checkbox'
-                          checked={checkboxState[c]}
+                          checked={checkboxes[c]}
                           className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'
                         />
                         <label htmlFor={`filter-${c}`} className='ml-3 text-sm text-gray-600'>
