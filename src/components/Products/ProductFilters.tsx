@@ -25,7 +25,7 @@ const ProductFilters = (props) => {
         initialCheckboxState[props.categories[c]] = false
       }
     }
-  }, [router.query.slug])
+  }, [router.query.slug,props.categories,initialCheckboxState])
 
   const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
 
