@@ -1,4 +1,4 @@
-import { Fragment, useState, useCallback, useEffect, useRef } from 'react'
+import { Fragment, useState, useCallback, useEffect, useRef, ChangeEvent } from 'react'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { useRouter } from 'next/router'
 import { XMarkIcon } from '@heroicons/react/24/outline'
@@ -9,7 +9,7 @@ import ProductFiltersMobile from '@products/ProductFiltersMobile'
 import ProductGrid from '@products/ProductGrid'
 import ProductsMenu from '@products/ProductsMenu'
 import { useSelector, useDispatch } from 'react-redux'
-import { selectCheckboxes, setCheckboxes } from '@slices/productSlice'
+import { selectCheckboxes, setCheckboxes,initCheckboxes } from '@slices/productSlice'
 
 const ProductFilters = (props) => {
   const checkboxes = useSelector(selectCheckboxes)
@@ -18,59 +18,20 @@ const ProductFilters = (props) => {
   const { breakpoint, windowSize } = useBreakpoint()
   const router = useRouter()
 
-  const [filterStates, setFilterStates] = useState([])
+  function onChange(e, router) {
+    props.onChange(e, router)
+  }
 
-  let initialCheckboxState = {}
-  /*
   useEffect(() => {
-    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
-    for (let c in props.categories) {
-      if (router.query.slug[1].split('=')[1].split(',').includes(props.categories[c]) && categoriesArr !== '') {
-        dispatch(setCheckboxes(props.categories[c]))
+    for (const c in props.categories) {
+      if (router.query.slug[1].split('=')[1].split(',').includes(props.categories[c])) {
+        // initialCheckboxState[props.categories[c]] = true
+        dispatch(initCheckboxes(props.categories[c]))
       } else {
-        dispatch(setCheckboxes({ ...checkboxes, [checkboxes[props.categories[c]]]: false }))
         // initialCheckboxState[props.categories[c]] = false
       }
     }
-    //  }, [router.query.slug, props.categories, initialCheckboxState])
-  }, [dispatch, props.categories, router.query.slug])
-*/
-  // const [checkboxState, setCheckboxState] = useState(initialCheckboxState)
-
-  console.log(checkboxes)
-  function onChange(e) {
-    dispatch(setCheckboxes(e.target.name))
-
-    /*
-    setCheckboxState({
-      ...checkboxState,
-      [e.target.name]: e.target.checked,
-    })
-*/
-    /*
-    dispatch(
-      setCheckboxes({
-        ...checkboxes,
-        [e.target.name]: e.target.checked,
-      })
-    )
-*/
-    // E.g. ['pies', 'cookies']
-    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
-    // E.g. 'pies,cookies'
-    let categoriesStr = categoriesArr.join(',')
-    // Append category onto 'chosen' filter if the category is checked and the current list of categories doesn't include the category we are currently checking for
-    // (i.e., add the category only if it hasn't already been added.).
-    if (e.target.checked && !categoriesArr.includes(e.target.name)) {
-      categoriesStr += categoriesStr.length > 0 ? `,${e.target.name}` : `${e.target.name}`
-    } else {
-      // If the above condition isn't met, return a comma-separated string of categories that excludes the category we are currently checking for.
-      // Effectively fulfills the purpose of unchecking a category.
-      categoriesStr = categoriesArr.filter((f) => f !== e.target.name).join(',')
-    }
-    // Update the chosen param with the newly-filtered categories.
-    router.push(`/order/categories/chosen&=${categoriesStr}`)
-  }
+  }, [router.query.slug, props.categories])
 
   return (
     <div className='hidden lg:block'>
@@ -104,7 +65,7 @@ const ProductFilters = (props) => {
                         <input
                           id={`filter-${c}`}
                           name={`${c}`}
-                          onChange={(e) => onChange(e)}
+                          onChange={(e) => props.onChange(e, router)}
                           type='checkbox'
                           checked={checkboxes[c]}
                           className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'

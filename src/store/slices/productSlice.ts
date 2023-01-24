@@ -21,8 +21,11 @@ export const productSlice = createSlice({
     setMobileFiltersOpen(state, action) {
       state.mobileFiltersOpen = action.payload
     },
-    setCheckboxes(state, action)  {
+    setCheckboxes(state, action) {
       state.checkboxes[action.payload] = !state.checkboxes[action.payload]
+    },
+    initCheckboxes(state, action) {
+      state.checkboxes[action.payload] = true
     },
   },
   // checkboxes state
@@ -36,7 +39,7 @@ export const productSlice = createSlice({
   },
 })
 
-export const { setMobileFiltersOpen, setCheckboxes } = productSlice.actions
+export const { setMobileFiltersOpen, setCheckboxes, initCheckboxes } = productSlice.actions
 
 export const selectMobileFiltersOpen = (state: AppState) => state.product.mobileFiltersOpen
 export const selectCheckboxes = (state: AppState) => state.product.checkboxes

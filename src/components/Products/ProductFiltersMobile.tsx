@@ -14,26 +14,10 @@ const ProductFiltersMobile = (props) => {
   const dispatch = useDispatch()
   const router = useRouter()
 
-  let initialCheckboxState = {}
-
-  function onChange(e) {
-    dispatch(setCheckboxes(e.target.name))
-    // E.g. ['pies', 'cookies']
-    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
-    // E.g. 'pies,cookies'
-    let categoriesStr = categoriesArr.join(',')
-    // Append category onto 'chosen' filter if the category is checked and the current list of categories doesn't include the category we are currently checking for
-    // (i.e., add the category only if it hasn't already been added.).
-    if (e.target.checked && !categoriesArr.includes(e.target.name)) {
-      categoriesStr += categoriesStr.length > 0 ? `,${e.target.name}` : `${e.target.name}`
-    } else {
-      // If the above condition isn't met, return a comma-separated string of categories that excludes the category we are currently checking for.
-      // Effectively fulfills the purpose of unchecking a category.
-      categoriesStr = categoriesArr.filter((f) => f !== e.target.name).join(',')
-    }
-    // Update the chosen param with the newly-filtered categories.
-    router.push(`/order/categories/chosen&=${categoriesStr}`)
+  function onChange(e, router) {
+    props.onChange(e, router)
   }
+
   return (
     <>
       {/* The 'show' prop controls whether the children should be shown or hidden */}
@@ -101,7 +85,7 @@ const ProductFiltersMobile = (props) => {
                                   <input
                                     id={`filter-${c}`}
                                     name={`${c}`}
-                                    onChange={(e) => onChange(e)}
+                                    onChange={(e) => props.onChange(e, router)}
                                     type='checkbox'
                                     checked={checkboxes[c]}
                                     className='h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500'

@@ -16,18 +16,18 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-			"@ui/*": ["./src/components/ui/*"],
-			"@home/*": ["./src/components/Home/*"],
-			"@products/*": ["./src/components/Products/*"],
-			"@pages/*": ["./src/pages/*"],
-			"@store/*": ["./src/store/index.ts"],
-			"@actions/*": ["./src/store/actions/*"],
-			"@utils/*": ["./src/utils/*"],
-			"@imgs/*": ["./public/img/*"],
-			"@data/*": ["./src/data/*"],
-      "@slices/*":["./src/store/slices/*"],
+      "@ui/*": ["./src/components/ui/*"],
+      "@home/*": ["./src/components/Home/*"],
+      "@products/*": ["./src/components/Products/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@store/*": ["./src/store/index.ts"],
+      "@actions/*": ["./src/store/actions/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@imgs/*": ["./public/img/*"],
+      "@data/*": ["./src/data/*"],
+      "@slices/*": ["./src/store/slices/*"],
       "@store/*": ["./src/store/index.ts"]
-		}
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
