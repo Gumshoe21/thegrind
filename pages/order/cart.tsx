@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import { Inter } from '@next/font/google'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 
@@ -76,7 +77,9 @@ const Cart = () => {
                 <span>$112.32</span>
               </SummaryItem>
             </ul>
-            <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>Checkout</button>
+            <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
+              <Link href='/checkout'>Checkout</Link>
+            </button>
           </div>
         </section>
       </div>
