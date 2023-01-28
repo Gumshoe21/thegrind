@@ -10,7 +10,7 @@ const Checkout = () => {
       <div className='lg:grid lg:grid-cols-2 gap-x-20'>
         {/* LEFT PART - FORM */}
         <CheckoutForm />
-        <div>
+        <div className='mt-12 sm:mt-0'>
           <h2 className='text-md font-bold'>Order Summary</h2>
           <div>
             <ul className='divide-y divide-gray-300'>

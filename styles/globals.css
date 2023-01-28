@@ -15,8 +15,20 @@
     min-width: 100vw;
     width: -webkit-fill-available;
   }
-}
 
+  input[type='text'] {
+    @apply rounded-md;
+  }
+
+  input[type='text']:focus {
+    @apply ring-2 ring-primary-100 border-primary-100;
+  }
+
+select {
+      @apply rounded-md !important;
+    }
+}
+    
 /* Misc */
 .hero {
   position: relative;

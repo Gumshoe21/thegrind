@@ -11,6 +11,8 @@ export default function inputChangeHandler(e) {
     }
   }
   return {
-    camelCaseString,value
+    camelCaseString,
+    value,
   }
 }
+
