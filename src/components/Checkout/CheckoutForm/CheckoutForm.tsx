@@ -7,6 +7,8 @@ import inputChangeHandler from '@utils/inputChangeHandler'
 import { setFormData, selectFormData } from '@slices/checkoutSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import { useState } from 'react'
+
+import { Input } from '@ui/Input'
 const CheckoutForm = () => {
   const dispatch = useDispatch()
   const formData = useSelector(selectFormData)
@@ -34,9 +36,11 @@ const CheckoutForm = () => {
           <div className='mt-8'>
             <h2 className='font-bold mb-4 text-md'>Shipping Information</h2>
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
-              <InputFull label='First Name' id='first-name' full={false} onChange={handleChange} />
+              <Input intent='half' label='First Name' id='first-name' />
+              {/*<InputFull label='First Name' id='first-name' full={false} onChange={handleChange} />*/}
               <InputFull label='Last Name' id='last-name' full={false} onChange={handleChange} />
-              <InputFull label='Address' id='address' onChange={handleChange} />
+              <Input intent='full' label='Address' id='address' />
+              {/*<InputFull label='Address' id='address' onChange={handleChange} />*/}
               <InputFull label='Apartment' id='apartment' onChange={handleChange} />
               <InputFull label='City' id='city' full={false} onChange={handleChange} />
               <ShippingInfoCountrySelect onChange={handleChange} />
