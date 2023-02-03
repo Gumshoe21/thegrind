@@ -10,10 +10,6 @@ const FilteredProducts = (props) => {
   //  const router = useRouter()
 
   const dispatch = useDispatch()
-  // to-do
-  if (props.hasError) {
-    return <div>Error</div>
-  }
 
   if (!props.products || props.products.length === 0) {
     return <div>Error.</div>
@@ -32,7 +28,7 @@ const FilteredProducts = (props) => {
     } else {
       // If the above condition isn't met, return a comma-separated string of categories that excludes the category we are currently checking for.
       // Effectively fulfills the purpose of unchecking a category.
-      categoriesStr = categoriesArr.filter((f) => f !== e.target.name).join(',')
+      categoriesStr = categoriesArr.filter((f: string) => f !== e.target.name).join(',')
     }
     // Update the chosen param with the newly-filtered categories.
     router.push(`/order/categories/chosen&=${categoriesStr}`)
@@ -52,7 +48,7 @@ const FilteredProducts = (props) => {
             <div className='grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4'>
               {/* Filters */}
               <ProductFilters categories={props.categories} onChange={onChange} />
-              <ProductGrid products={props.products}  />
+              <ProductGrid products={props.products} />
             </div>
           </section>
         </main>
@@ -85,7 +81,7 @@ export async function getServerSideProps(context) {
     })
   }
 
-  let categories = []
+  let categories: {}[] = []
 
   for (const product of products) {
     if (!categories.includes(product.category)) {
@@ -95,7 +91,7 @@ export async function getServerSideProps(context) {
 
   // If
   products = filterData.join('') === '' ? products : products.filter((p) => filterData.includes(p.category))
-
+  console.log(categories)
   return {
     props: {
       products,

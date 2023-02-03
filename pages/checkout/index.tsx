@@ -1,8 +1,13 @@
 import Image from 'next/image'
 import CheckoutForm from '@checkout/CheckoutForm/CheckoutForm'
-const FormHeader = ({ children }) => {
-  return <header className='font-bold text-md'>{children}</header>
+
+interface IFormHeader {
+  children: JSX.Element
 }
+const FormHeader = (props: IFormHeader) => {
+  return <header className='font-bold text-md'>{props.children}</header>
+}
+
 const Checkout = () => {
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8'>
@@ -42,8 +47,7 @@ flex-1 = 1 1 0%
 */
 }
 
-const SummaryItem = ({ children }) => {
-  return (
+const SummaryItem = () => { return (
     <li className='flex py-6 '>
       {/* flex: 0 0 auto - to prevent the image from shrinking at any screen size */}
       <div className='flex-shrink-0'>

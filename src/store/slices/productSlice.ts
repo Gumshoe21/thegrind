@@ -4,14 +4,15 @@ import { AppState } from '../index'
 
 export interface ProductState {
   mobileFiltersOpen: boolean
-  checkboxes: {}
+  checkboxes: Response
   // checkboxes interface property
 }
-
+interface Response {
+  [key: string]: boolean
+}
 const initialState: ProductState = {
   mobileFiltersOpen: false,
   checkboxes: {},
-  // checkboxes initial state
 }
 
 export const productSlice = createSlice({

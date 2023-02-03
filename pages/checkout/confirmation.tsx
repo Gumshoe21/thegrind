@@ -1,3 +1,4 @@
+import React from 'react'
 import { Poppins } from '@next/font/google'
 const poppins = Poppins({ weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'] })
 
@@ -8,7 +9,7 @@ function OrderItem() {
     <div className='flex py-10 space-x-6'>
       {/* image*/}
       <div className='flex-shrink-0 overflow-none'>
-        <Image className='rounded-md overflow-none' src='/img/products/p1.jpg' height='100' width='100' />
+        <Image className='rounded-md overflow-none' src='/img/products/p1.jpg' height='100' width='100' alt='Chocolate Chip Cookies' />{' '}
       </div>
       <div className='flex flex-col flex-auto'>
         <div>
@@ -36,11 +37,23 @@ function OrderItem() {
   )
 }
 
-function DescriptionList(props) {
+export type childrenProp = JSX.Element | JSX.Element[] | React.ReactNode[]
+
+interface IDescriptionList {
+  children: childrenProp
+  className?: string
+}
+
+function DescriptionList(props: IDescriptionList) {
   return <dl className='grid grid-cols-2 py-10 gap-x-6'>{props.children}</dl>
 }
 
-function DescriptionItem(props) {
+interface IDescriptionItem {
+  children: childrenProp
+  title: string
+}
+
+function DescriptionItem(props: IDescriptionItem) {
   return (
     <div>
       <dt className={`${poppins.variable} font-bold italic`}>{props.title}</dt>
@@ -115,7 +128,11 @@ export default function OrderConfirmation() {
   )
 }
 
-function SummaryItem({ title, description }) {
+interface ISummaryItem {
+  title: string
+  description: string
+}
+function SummaryItem({ title, description }: ISummaryItem) {
   return (
     <div className='flex justify-between'>
       <dt className='font-bold'>{title}</dt>

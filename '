@@ -28,10 +28,12 @@ const ProductFilters = (props: IProductFilters) => {
   }
 
   useEffect(() => {
-    let route = router.query.slug[1].split('=')[1].split(',')
     for (const c in props.categories) {
+      let route = router?.query?.slug[1]?.split('=')[1]?.split(',') ?? ['']
+
       if (route.includes(props.categories[c])) {
         dispatch(initCheckboxes(props.categories[c]))
+      } else {
       }
     }
   }, [router.query.slug, props.categories])

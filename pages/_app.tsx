@@ -1,3 +1,4 @@
+import React from 'react'
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
 import Head from 'next/head'
@@ -6,7 +7,7 @@ import type { AppProps } from 'next/app'
 import { wrapper } from '@store/index'
 import { Provider } from 'react-redux'
 
-const App: FC<AppProps> = ({ Component, pageProps,...rest }: AppProps) => {
+const App: React.FC<AppProps> = ({ Component, pageProps, ...rest }: AppProps) => {
   const { store } = wrapper.useWrappedStore(rest)
   return (
     <Provider store={store}>
