@@ -10,11 +10,12 @@ const nextConfig = {
         hostname: 'www.recipetineats.com',
       },
       {
-
         protocol: 'https',
-
         hostname: 'tailwindui.com',
-
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
       },
     ],
   },
