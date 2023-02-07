@@ -1,3 +1,4 @@
+import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from '@next/font/google'
@@ -5,7 +6,10 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 
 const inter = Inter()
 
-const SummaryItem = ({ children }) => {
+interface ISummaryItem {
+  children: React.ReactNode[]
+}
+const SummaryItem = ({ children }: ISummaryItem) => {
   return <li className='flex justify-between gap-8'>{children}</li>
 }
 

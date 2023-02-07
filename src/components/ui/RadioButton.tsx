@@ -1,4 +1,10 @@
-export default function RadioButton(props) {
+import { ReactChangeEvent } from '@types'
+interface IRadioButton {
+  label: string
+  name: string
+  onChange: ReactChangeEvent
+}
+export default function RadioButton(props:IRadioButton) {
   const { label, name } = props
 
   return (
@@ -11,7 +17,7 @@ export default function RadioButton(props) {
         className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500'
         onChange={(e) => props.onChange(e)}
       />
-      <label for='credit-card' className='ml-3 block text-sm font-medium text-gray-700'>
+      <label htmlFor='credit-card' className='ml-3 block text-sm font-medium text-gray-700'>
         {label}
       </label>
     </div>

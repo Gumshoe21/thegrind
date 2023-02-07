@@ -38,8 +38,8 @@ const initialState: CheckoutState = {
     deliveryMethod: '',
     paymentMethod: '',
     creditCardNumber: '',
-    nameOnCC: '',
-    expDate: '',
+    nameOnCard: '',
+    expirationDate: '',
     cvc: '',
   },
 }

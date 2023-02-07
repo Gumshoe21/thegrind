@@ -36,17 +36,17 @@ const orderSchema = mongoose.Schema(
       type: String,
     },
     creditCard: {
-      type:String
+      type: String,
     },
     nameOnCC: {
-      type:String,
+      type: String,
     },
     expDate: {
-      type:String
+      type: String,
     },
     cvc: {
-      type:String,
-    }
+      type: String,
+    },
     products: [
       {
         type: mongoose.Types.ObjectId,

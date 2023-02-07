@@ -6,7 +6,14 @@ import ProductsMenu from '@products/ProductsMenu'
 import ProductFilters from '@products/ProductFilters'
 import { setCheckboxes } from '@slices/productSlice'
 import { useDispatch } from 'react-redux'
-const FilteredProducts = (props) => {
+import { type NextRouter } from 'next/router'
+
+interface IFilteredProducts {
+  products: []
+  categories: []
+}
+
+const FilteredProducts = (props: IFilteredProducts) => {
   //  const router = useRouter()
 
   const dispatch = useDispatch()
@@ -15,10 +22,10 @@ const FilteredProducts = (props) => {
     return <div>Error.</div>
   }
 
-  function onChange(e, router) {
+  const onChange: (e: React.ChangeEvent<HTMLInputElement>, router: NextRouter) => void = (e, router) => {
     dispatch(setCheckboxes(e.target.name))
     // E.g. ['pies', 'cookies']
-    const categoriesArr = router.query.slug[1].split('=')[1].split(',')
+    const categoriesArr = router.query.slug![1].split('=')[1].split(',')
     // E.g. 'pies,cookies'
     let categoriesStr = categoriesArr.join(',')
     // Append category onto 'chosen' filter if the category is checked and the current list of categories doesn't include the category we are currently checking for

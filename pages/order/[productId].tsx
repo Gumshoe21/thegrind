@@ -1,6 +1,16 @@
 import Image from 'next/image'
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import { ParsedUrlQuery } from 'querystring'
 
-const ProductDetailPage = (props) => {
+interface IProductDetailPage {
+  product: {
+    name: string
+    price: string
+    imageAlt: string
+    imageSrc: string
+  }
+}
+const ProductDetailPage = (props: IProductDetailPage) => {
   const { product } = props
 
   return (
@@ -17,7 +27,7 @@ const ProductDetailPage = (props) => {
         {/* Product image */}
         <section className='col-start-2 row-span-2 self-center mt-10 flex '>
           <div className='overflow-hidden rounded-lg'>
-            <Image src={`/img/products/${product.imageSrc}`} width='440' height='640' />
+            <Image src={`/img/products/${product.imageSrc}`} width='440' height='640' alt={product.imageAlt} />
           </div>
         </section>
         {/* Options/add to cart section */}
@@ -35,9 +45,19 @@ const ProductDetailPage = (props) => {
     </main>
   )
 }
-export async function getStaticProps(context) {
+{
+  /* type Props = {
+  post: PostData
+}
+interface Params extends ParsedUrlQuery {
+  productId: string
+}
+*/
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
   // p1, p2, etc.
-  const productId = context.params.productId
+  const productId = context.params!.productId
 
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
   const data = await res.json()

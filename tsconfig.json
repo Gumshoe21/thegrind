@@ -27,7 +27,8 @@
       "@imgs/*": ["./public/img/*"],
       "@data/*": ["./src/data/*"],
       "@slices/*": ["./src/store/slices/*"],
-      "@store/*": ["./src/store/index.ts"]
+      "@store/*": ["./src/store/index.ts"],
+      "@types": ["./src/types/index.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

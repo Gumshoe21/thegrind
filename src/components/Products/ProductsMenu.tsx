@@ -3,10 +3,10 @@ import { Menu, Transition } from '@headlessui/react'
 import { useState, Fragment } from 'react'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 
-import { selectMobileFiltersOpen,setMobileFiltersOpen } from '@slices/productSlice'
+import { selectMobileFiltersOpen, setMobileFiltersOpen } from '@slices/productSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
-function classNames(...classes) {
+function classNames(...classes: []) {
   return classes.filter(Boolean).join(' ')
 }
 

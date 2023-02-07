@@ -11,8 +11,8 @@ const useBreakpoint = () => {
 
   const [breakpoint, setBreakPoint] = useState('')
   const [windowSize, setWindowSize] = useState({
-    width: undefined,
-    height: undefined,
+    width: 0,
+    height: 0,
   })
 
   const handleResize = () => {
@@ -38,7 +38,7 @@ const useBreakpoint = () => {
     if (1280 < windowSize.width && windowSize.width < 1920) {
       setBreakPoint(breakpoints[1280])
     }
-    if (windowSize.width >= 1920) {
+    if (windowSize?.width >= 1920) {
       setBreakPoint(breakpoints[1920])
     }
 

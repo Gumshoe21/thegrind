@@ -5,21 +5,21 @@ const DeliveryMethodInput = (props) => {
     <label className={`flex relative ${isChecked === props.value ? 'cursor-pointer ring-2 ring-indigo-500' : 'ring-2 ring-gray-300'} rounded-lg p-4`}>
       <input type='radio' name='delivery-method' value={value} className='sr-only' onChange={(e) => props.onChange(e)} />
       <span className='flex flex-1'>
-        <span class='flex flex-col'>
-          <span id='delivery-method-0-label' class='block text-sm font-medium text-gray-900'>
+        <span className='flex flex-col'>
+          <span id='delivery-method-0-label' className='block text-sm font-medium text-gray-900'>
             {label}
           </span>
-          <span id='delivery-method-0-description-0' class='mt-1 flex items-center text-sm text-gray-500'>
+          <span id='delivery-method-0-description-0' className='mt-1 flex items-center text-sm text-gray-500'>
             {turnaroundTime}
           </span>
-          <span id='delivery-method-0-description-1' class='mt-6 text-sm font-medium text-gray-900'>
+          <span id='delivery-method-0-description-1' className='mt-6 text-sm font-medium text-gray-900'>
             {price}
           </span>
         </span>
       </span>
       <svg
-        hidden={isChecked !== props.value && true}
-        class='h-5 w-5 text-indigo-600'
+        hidden={isChecked !== props.value && 'hidden'}
+        className='h-5 w-5 text-indigo-600'
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 20 20'
         fill='currentColor'

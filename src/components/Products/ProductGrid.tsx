@@ -7,7 +7,7 @@ import useBreakpoint from '@utils/use-breakpoint'
 import { sortOptions, subCategories } from '@data/order'
 import ProductFiltersMobile from '@products/ProductFiltersMobile'
 
-const ProductGrid = ({ products }) => {
+const ProductGrid = ({ products }: { products: {}[] }) => {
   const [filtered, setFiltered] = useState([])
   return (
     <div className='lg:col-span-3'>
