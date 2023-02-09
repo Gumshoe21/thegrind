@@ -1,4 +1,15 @@
-const DeliveryMethodInput = (props) => {
+import { ReactChangeEvent } from '@types'
+
+interface IDeliveryMethodInput {
+  label: string
+  turnaroundTime: string
+  price: string
+  value: string
+  isChecked: string
+  onChange: ReactChangeEvent
+}
+
+const DeliveryMethodInput = (props: IDeliveryMethodInput) => {
   const { label, turnaroundTime, price, value, isChecked } = props
 
   return (

@@ -24,11 +24,11 @@
     @apply ring-2 ring-primary-100 border-primary-100;
   }
 
-select {
-      @apply rounded-md !important;
-    }
+  select {
+    @apply rounded-md !important;
+  }
 }
-    
+
 /* Misc */
 .hero {
   position: relative;
@@ -38,7 +38,7 @@ select {
 
 .hero::before {
   content: '';
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/hero.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../public/img/hero.jpg');
   background-size: cover;
   background-position: center center;
   background-blend-mode: screen;
@@ -62,7 +62,7 @@ select {
 
 .bakery::before {
   content: '';
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('./../public/img/baked-goods.jpeg');
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../public/img/baked-goods.jpeg');
   background-size: cover;
   background-position: center center;
   position: absolute;

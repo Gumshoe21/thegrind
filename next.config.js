@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '',
   reactStrictMode: true,
   swcMinify: true,
   images: {
@@ -15,7 +16,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'lh3.googleusercontent.com',
+        hostname: '**.googleusercontent.com',
       },
     ],
   },

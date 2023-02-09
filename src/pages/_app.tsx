@@ -2,7 +2,7 @@ import React from 'react'
 import '../styles/globals.css'
 import 'tailwindcss/tailwind.css'
 import Head from 'next/head'
-import Navbar from '../src/components/ui/Navbar'
+import Navbar from '@ui/Navbar'
 import type { AppProps } from 'next/app'
 import { wrapper } from '@store/index'
 import { Provider } from 'react-redux'
@@ -19,7 +19,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...pageProps
       </Head>
 
       <SessionProvider session={session}>
-      <Navbar />
+        <Navbar />
         <Component {...pageProps} />
       </SessionProvider>
     </Provider>

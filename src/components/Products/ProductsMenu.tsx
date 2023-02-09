@@ -6,7 +6,7 @@ import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from
 import { selectMobileFiltersOpen, setMobileFiltersOpen } from '@slices/productSlice'
 import { useSelector, useDispatch } from 'react-redux'
 
-function classNames(...classes: []) {
+function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 

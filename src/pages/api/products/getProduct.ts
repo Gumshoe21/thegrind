@@ -1,26 +1,27 @@
 import { MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import Product from '../../../src/models/productModel'
-import connectDB from '../../../src/connectDB'
+import Product from '@models/productModel'
+import connectDB from '@src/connectDB'
 
 connectDB()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method !== 'POST') {
+    if (req.method !== 'GET') {
       return
     }
 
-    const products = await Product.insertMany(req.body)
+    const product = await Product.findOne({ id: req.body.id })
 
-    if (!products) {
-      return res.status(401).json({ error: 'Products not provided.' })
+    if (!product) {
+      return res.status(401).json({ error: 'Product not found.' })
     }
 
     return res.status(200).json({
       message: 'test',
-      products,
+      product,
     })
+
   } catch (error) {
     console.log(error)
   }

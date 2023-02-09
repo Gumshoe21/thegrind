@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
-import Product from '../../../src/models/productModel'
-import connectDB from '../../../src/connectDB'
+import Product from '@models/productModel'
+import connectDB from '@src/connectDB'
 
 connectDB()
 

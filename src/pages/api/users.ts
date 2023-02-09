@@ -1,5 +1,5 @@
-import connectDB from '../../src/connectDB'
-import User from '../../src/models/userModel'
+import connectDB from '@src/connectDB'
+import User from '@models/userModel'
 
 connectDB()
 

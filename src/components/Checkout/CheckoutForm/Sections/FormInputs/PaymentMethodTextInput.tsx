@@ -1,4 +1,10 @@
-export default function TextInput(props) {
+import { ReactChangeEvent } from '@types'
+interface ITextInput {
+  label: string
+  name: string
+  onChange: ReactChangeEvent
+}
+export default function TextInput(props: ITextInput) {
   const { label, name } = props
   return (
     <div className='flex flex-col gap-2'>
