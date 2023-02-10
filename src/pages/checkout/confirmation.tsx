@@ -1,6 +1,7 @@
 import React from 'react'
 import { Poppins } from '@next/font/google'
 import { childrenProp } from '@types'
+
 const poppins = Poppins({ weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'], variable: '--poppins-font' })
 
 import Image from 'next/image'
@@ -14,7 +15,7 @@ function OrderItem() {
       </div>
       <div className='flex flex-col flex-auto'>
         <div>
-          <h1 className={` ${poppins.variable} italic text-lg font-bold`}>Chocolate Chip Cookies</h1>
+          <h1 className={`${poppins.variable} italic text-lg font-bold`}>Chocolate Chip Cookies</h1>
           <p className='mt-2'>One dozen chocolate chip cookies so you can feed Fat Yoshi for 5 minutes.</p>
         </div>
         <div className='flex items-end flex-[1_1_0%] gap-4'>

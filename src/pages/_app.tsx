@@ -7,8 +7,10 @@ import type { AppProps } from 'next/app'
 import { wrapper } from '@store/index'
 import { Provider } from 'react-redux'
 import { SessionProvider } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...pageProps }, ...rest }: AppProps) => {
+  const router = useRouter()
   const { store } = wrapper.useWrappedStore(rest)
   return (
     <Provider store={store}>
@@ -19,7 +21,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps: { session, ...pageProps
       </Head>
 
       <SessionProvider session={session}>
-        <Navbar />
+        { router.pathname !== '/profile' && <Navbar />}
         <Component {...pageProps} />
       </SessionProvider>
     </Provider>
