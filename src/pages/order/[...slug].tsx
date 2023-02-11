@@ -70,8 +70,14 @@ export async function getServerSideProps(context) {
   let categoriesPath = params.slug[1] || null
   let filterData = categoriesPath?.split('=')[1]?.split(',')
 
+  let res = await fetch('http://localhost:3000/api/products/getProducts')
+  let data = await res.json()
+  let { products } = data
+
+  /*
   const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
   const data = await res.json()
+*/
 
   if (categoriesPath === undefined || filterData === undefined) {
     return {
@@ -79,25 +85,53 @@ export async function getServerSideProps(context) {
     }
   }
 
-  let products = []
+  //let products = []
 
+  /*
+[
+    {
+      _id: '63e6d2988ab328bc61642dfe',
+      name: 'Pumpkin Pie',
+      variants: [],
+      category: 'pies',
+      price: '$35',
+      imageSrc: 'p4.jpg',
+      imageAlt: 'Pumpkin Pie',
+      __v: 0
+    },
+    {
+      _id: '63e6d2988ab328bc61642dff',
+      name: 'Belgian Chocolate Pie',
+      variants: [],
+      category: 'pies',
+      price: '$40',
+      imageSrc: 'p5.jpg',
+      imageAlt: 'Belgian Chocolate Pie',
+      __v: 0
+    }
+]
+*/
+
+  /* 
   for (const key in data) {
     products.push({
       id: key,
       ...data[key],
     })
   }
+*/
 
   let categories: {}[] = []
 
-  for (const product of products) {
-    if (!categories.includes(product.category)) {
-      categories.push(product.category)
+  for(let i = 0; i < products.length; i++) {
+    console.log('PRODUCT:', products[i])
+    if (!categories.includes(products[i].category)) {
+      categories.push(products[i].category)
     }
   }
 
-  // If
   products = filterData.join('') === '' ? products : products.filter((p) => filterData.includes(p.category))
+
   console.log(categories)
   return {
     props: {

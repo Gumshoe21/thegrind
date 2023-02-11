@@ -57,11 +57,23 @@ interface Params extends ParsedUrlQuery {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   // p1, p2, etc.
-  const productId = context.params!.productId
+  const productId = context.params!.productId.split('p')[1]
+  console.log(context)
+  const res = await fetch('http://localhost:3000/api/products/getProduct', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      productId,
+    }),
+  })
 
-  const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
   const data = await res.json()
+  let { product } = data
+  console.log(product)
 
+  /*
   const products = []
 
   for (const key in data) {
@@ -72,8 +84,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
     })
   }
 
-  let product = await products.find((p) => p.id === productId)
+  product = await products.find((p) => p.pId === productId)
 
+  */
   return {
     props: {
       product,
@@ -83,9 +96,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
-  const res = await fetch('https://thegrind-3097f-default-rtdb.firebaseio.com/products.json')
+  const res = await fetch('http://localhost:3000/api/products/getProducts')
   const data = await res.json()
-
+  let { products } = data
+  /*
   let products = []
 
   for (const key in data) {
@@ -95,11 +109,11 @@ export async function getStaticPaths() {
       key,
     })
   }
-
-  const paths = products.map((p) => ({ params: { productId: p.id.toString() } }))
+*/
+  const paths = products.map((p) => ({ params: { productId: 'p' + p.pId } }))
 
   return {
-    paths: paths,
+    paths,
     fallback: false,
   }
 }

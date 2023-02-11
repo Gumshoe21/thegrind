@@ -7,11 +7,11 @@ connectDB()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    if (req.method !== 'GET') {
+    if (req.method !== 'POST') {
       return
     }
 
-    const product = await Product.findOne({ id: req.body.id })
+    const product = await Product.findOne({ pId: req.body.productId })
 
     if (!product) {
       return res.status(401).json({ error: 'Product not found.' })
@@ -21,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       message: 'test',
       product,
     })
-
   } catch (error) {
     console.log(error)
   }

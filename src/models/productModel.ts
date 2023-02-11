@@ -2,10 +2,14 @@ import mongoose from 'mongoose'
 import validator from 'validator'
 
 const productSchema = new mongoose.Schema({
+  pId: {
+    type: String,
+    required: [true, 'Product must have a pId.'],
+    unique: true,
+  },
   name: {
     type: String,
     required: [true, 'Product name is required.'],
-    default: "arlen",
     unique: true,
   },
   variants: [String],
