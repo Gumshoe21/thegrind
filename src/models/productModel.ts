@@ -12,11 +12,19 @@ const productSchema = new mongoose.Schema({
     required: [true, 'Product name is required.'],
     unique: true,
   },
-  variants: [String],
+  variants: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   category: {
-    type: String,
-  },
-  price: {
     type: String,
   },
   imageSrc: {

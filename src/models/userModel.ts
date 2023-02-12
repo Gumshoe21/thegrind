@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 
-const userSchema = mongoose.Schema({
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
   },
@@ -16,8 +16,8 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   resetToken: { type: String },
-  update: { type: String },
-  validEmail: { boolean: Boolean, default: false },
+  update: { type: String, required: true, default: 'test' },
+  validEmail: { boolean: Boolean },
   emailToken: { type: String },
 })
 

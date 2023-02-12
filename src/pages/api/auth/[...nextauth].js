@@ -16,7 +16,6 @@ export const authOptions = {
     }),
   ],
   database: process.env.MONGODB_URI,
-  debug: true,
 }
 
 export default NextAuth(authOptions)
