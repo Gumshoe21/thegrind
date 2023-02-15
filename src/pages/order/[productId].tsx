@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
@@ -5,19 +6,50 @@ import { ParsedUrlQuery } from 'querystring'
 interface IProductDetailPage {
   product: {
     name: string
-    price: string
     imageAlt: string
     imageSrc: string
-    variants: string[]
+    variants: {
+      name: string
+      price: string
+    }[]
   }
 }
 const ProductDetailPage = (props: IProductDetailPage) => {
   const { product } = props
+  const [selectedVariant, setSelectedVariant] = useState(product.variants[0].name)
+  const [currentPrice, setCurrentPrice] = useState(product.variants[0].price)
 
-  async function handleSubmit() {}
+  const [productForm, setProductForm] = useState({
+    name: product.name,
+    // price,
+    variantName: selectedVariant,
+    variantPrice: currentPrice,
+  })
 
+  const { variantName, variantPrice } = productForm
+
+  useEffect(() => {
+    setCurrentPrice(product.variants[0].price)
+  }, [])
+
+  async function onClick(e) {
+    setCurrentPrice(product.variants.filter((v) => v.name === e.target.name)[0].price)
+    setSelectedVariant(e.target.name)
+  }
+
+  async function onSubmit(e) {
+    // 1. set variant name and variant price
+    setProductForm({
+      ...productForm,
+      variantName: selectedVariant,
+      variantPrice: currentPrice,
+    })
+    // router.push('/order/cart')
+  }
+
+  console.log(productForm)
   return (
-    <form>
+    <form onSubmit={(e) => onSubmit(e)}>
       <main className='flex'>
         {/* Content container */}
         <div className='mx-auto lg:grid lg:grid-cols-2 max-w-2xl lg:max-w-7xl gap-x-16 px-8 py-24 '>
@@ -25,7 +57,7 @@ const ProductDetailPage = (props: IProductDetailPage) => {
           <section className='max-w-lg justify-between items-stretch content-stretch col-start-1 self-end flex flex-col '>
             <nav className='text-md text-gray-500'>Products&nbsp;&nbsp;/&nbsp;&nbsp; Cookies</nav>
             <header className='text-4xl mt-4 font-bold'>{product.name}</header>
-            <div className='text-2xl mt-2'>{product.price}</div>
+            <div className='text-2xl mt-2'>{'$' + currentPrice}</div>
             <p className='mt-4 text-md text-gray-500'>Freshly baked in-house and shipped same day!</p>
           </section>
           {/* Product image */}
@@ -38,11 +70,12 @@ const ProductDetailPage = (props: IProductDetailPage) => {
           <section className='flex flex-col col-start-1 row-start-2 self-start max-w-lg mt-10 lg:mx-0 '>
             <div className='flex flex-col gap-4'>
               <div className='text-md'>Amount</div>
-              <div className='grid grid-cols-2  items-center justify-items-center gap-2'>
+              <div className='grid grid-cols-2   items-center justify-items-center gap-2'>
                 {product.variants.map((v) => (
-                  <button type='button' className='border-2 border-primary-600 rounded-md px-4 w-full py-4'>
-                    {v}
-                  </button>
+                  <label className={`${selectedVariant === v.name ? 'ring-2 ring-indigo-500' : 'ring-2 ring-gray-300 cursor-pointer'} px-24 py-4 rounded-md`}>
+                    <input type='radio' name={v.name} value={v.price} className='sr-only' onClick={(e) => onClick(e)} />
+                    <span>{v.name}</span>
+                  </label>
                 ))}
               </div>
             </div>
