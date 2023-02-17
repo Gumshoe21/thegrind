@@ -10,43 +10,52 @@ export default async function handler(req, res) {
       return
     }
 
-    let { name, productQuantity, variantName, variantPrice, userEmail, product_id } = req.body
+    let { name, productQuantity, variantName, variantPrice, user_id, product_id } = req.body
 
-    let cart = await Cart.findOne({ user: req.body.user_id, status: 'active' })
+    let cart = await Cart.findOne({ user: user_id, status: 'active' })
 
+    // If a cart that both belongs to the user and has a status of 'active' doesn't exist, create one and add the item to it.
     if (!cart) {
       cart = await Cart.create({
         user: req.body.user_id,
         status: 'active',
         items: [
           {
-            name: 'Chocolate Chip Cookies',
-            variant: 'arlen',
-            quantity: 4,
-            price: '3',
+            name: name,
+            variant: variantName,
+            price: variantPrice,
+            quantity: productQuantity,
           },
         ],
       })
+      // Otherwise, if such a cart does exist, try to find an item in it with the name of the item added.
     } else {
       let itemIndex = cart.items.findIndex((i) => i.name === name)
+      // If the item is already in the cart, incrememnt its quantity.
       if (itemIndex > -1) {
-        let productItem = cart.items[itemIndex]
-        productItem.quantity += productQuantity
-        cart.items[itemIndex] = productItem
+        let cartItem = cart.items[itemIndex]
+        let quantityDelta = +productQuantity - cartItem.quantity // 3-4  = -1
+        cartItem.quantity += +quantityDelta
+        cart.items[itemIndex] = cartItem
+        // Otherwise, add it to the cart as a new item.
       } else {
         cart.items.push({
-          name: 'Chocolate Chip Cookies',
-          variant: 'arlen',
-          quantity: 4,
-          price: '3',
+          name: name,
+          variant: variantName,
+          price: variantPrice,
+          quantity: productQuantity,
         })
       }
+
       cart = await cart.save()
-      return res.status(200).send({
-        message: 'Cart item updated.',
+
+      // Return the existing, newly-updated cart.
+      return res.status(200).json({
+        message: 'Cart item added/updated.',
         cart,
       })
     }
+    // Return the newly created cart.
     res.status(200).json({
       message: 'Cart created.',
       cart,

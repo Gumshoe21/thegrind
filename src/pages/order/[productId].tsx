@@ -18,13 +18,13 @@ interface IProductDetailPage {
 }
 const ProductDetailPage = (props: IProductDetailPage) => {
   const { data: session } = useSession()
-
   const { product } = props
+
   const [variant, setVariant] = useState(product.variants[0].name)
   const [price, setPrice] = useState(product.variants[0].price)
   const [quantity, setQuantity] = useState('1')
+
   const [productForm, setProductForm] = useState({
-    //userEmail: session?.user?.email,
     user_id: session?.user?.id,
     product_id: product._id,
     name: product.name,
@@ -32,9 +32,8 @@ const ProductDetailPage = (props: IProductDetailPage) => {
     variantPrice: price,
     productQuantity: quantity,
   })
-console.log(productForm)
   const { variantName, variantPrice, productQuantity } = productForm
-
+  console.log(session)
   useEffect(() => {
     setPrice(product.variants[0].price)
   }, [])
@@ -49,11 +48,11 @@ console.log(productForm)
   }
 
   async function onSubmit(e) {
-    console.log('session', session)
     e.preventDefault()
     // 1. set variant name and variant price
     setProductForm({
       ...productForm,
+      user_id: session?.user?.id,
       variantName: variant,
       variantPrice: price,
       productQuantity: quantity,
@@ -65,10 +64,11 @@ console.log(productForm)
 
       body: JSON.stringify(productForm),
     })
+
+    console.log(productForm)
     return res.json()
     // router.push('/order/cart')
   }
-
   return (
     <form onSubmit={(e) => onSubmit(e)}>
       <main className='flex'>

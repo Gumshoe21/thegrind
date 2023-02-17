@@ -1,8 +1,10 @@
+import { authOptions } from '../api/auth/[...nextauth]'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from '@next/font/google'
 import { XMarkIcon } from '@heroicons/react/24/outline'
+import { getServerSession } from 'next-auth/next'
 
 const inter = Inter()
 
@@ -13,7 +15,7 @@ const SummaryItem = ({ children }: ISummaryItem) => {
   return <li className='flex justify-between gap-8'>{children}</li>
 }
 
-const CartItem = () => {
+const CartItem = (props) => {
   return (
     <>
       {/* Container for everything below header */}
@@ -23,9 +25,9 @@ const CartItem = () => {
         </div>
         <div className='lg:col-span-3 lg:-col-start-3 flex flex-col justify-between px-4 py-2'>
           <div className={`flex flex-col space-y-1 ${inter.className}`}>
-            <span>Chocolate Chip Cookies</span>
-            <span>One Dozen</span>
-            <span className='font-bold'>$14</span>
+            <span>{props.name}</span>
+            <span>{props.variant}</span>
+            <span className='font-bold'>{`$${props.price}`}</span>
           </div>
           <div>In Stock</div>
         </div>
@@ -44,7 +46,9 @@ const CartItem = () => {
   )
 }
 
-const Cart = () => {
+interface ICart {}
+const Cart = ({ cart }) => {
+  console.log(cart)
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
@@ -52,12 +56,9 @@ const Cart = () => {
       <div className='lg:grid lg:grid-cols-12 mt-2 gap-10 '>
         {/* Item List */}
         <section className='col-span-7 space-y-8 pr-4 overflow-y-scroll h-[calc(100vh-150px)]'>
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
-          <CartItem />
+          {cart.items.map((item) => (
+            <CartItem name={item.name} variant={item.variant} price={item.price} />
+          ))}
         </section>
         {/* Checkout form/button */}
         <section className='lg:col-span-5 col-span-7 flex flex-col lg:row-start-1 lg:col-start-8 '>
@@ -91,4 +92,19 @@ const Cart = () => {
   )
 }
 
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  console.log(session)
+
+  const res = await fetch('http://localhost:3000/api/carts/getCart')
+
+  let data = await res.json()
+  let { cart } = data
+  if (!cart) return
+  return {
+    props: {
+      cart,
+    },
+  }
+}
 export default Cart
