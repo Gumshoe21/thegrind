@@ -1,17 +1,21 @@
 import mongoose from 'mongoose'
 import validator from 'validator'
 
-const cartSchema = mongoose.Schema(
+const cartSchema = new mongoose.Schema(
   {
     status: {
       type: String,
-      required: true,
       default: 'inactive',
     },
-    products: [
+    items: [
       {
-        type: mongoose.Types.ObjectId,
-        ref: 'Product',
+        name: {
+          type: String,
+          required: true,
+        },
+        quantity: { type: Number },
+        variant: { type: String },
+        price: { type: String },
       },
     ],
     user: {

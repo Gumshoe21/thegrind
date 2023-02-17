@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 
+import { useSession } from 'next-auth/react'
+
 interface IProductDetailPage {
   product: {
     name: string
@@ -15,39 +17,58 @@ interface IProductDetailPage {
   }
 }
 const ProductDetailPage = (props: IProductDetailPage) => {
+  const { data: session } = useSession()
+
   const { product } = props
-  const [selectedVariant, setSelectedVariant] = useState(product.variants[0].name)
-  const [currentPrice, setCurrentPrice] = useState(product.variants[0].price)
-
+  const [variant, setVariant] = useState(product.variants[0].name)
+  const [price, setPrice] = useState(product.variants[0].price)
+  const [quantity, setQuantity] = useState('1')
   const [productForm, setProductForm] = useState({
+    //userEmail: session?.user?.email,
+    user_id: session?.user?.id,
+    product_id: product._id,
     name: product.name,
-    // price,
-    variantName: selectedVariant,
-    variantPrice: currentPrice,
+    variantName: variant,
+    variantPrice: price,
+    productQuantity: quantity,
   })
-
-  const { variantName, variantPrice } = productForm
+console.log(productForm)
+  const { variantName, variantPrice, productQuantity } = productForm
 
   useEffect(() => {
-    setCurrentPrice(product.variants[0].price)
+    setPrice(product.variants[0].price)
   }, [])
 
   async function onClick(e) {
-    setCurrentPrice(product.variants.filter((v) => v.name === e.target.name)[0].price)
-    setSelectedVariant(e.target.name)
+    setPrice(product.variants.filter((v) => v.name === e.target.name)[0].price)
+    setVariant(e.target.name)
+  }
+
+  async function onChange(e) {
+    setQuantity(e.target.value)
   }
 
   async function onSubmit(e) {
+    console.log('session', session)
+    e.preventDefault()
     // 1. set variant name and variant price
     setProductForm({
       ...productForm,
-      variantName: selectedVariant,
-      variantPrice: currentPrice,
+      variantName: variant,
+      variantPrice: price,
+      productQuantity: quantity,
     })
+
+    const res = await fetch('http://localhost:3000/api/carts/createCart', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+
+      body: JSON.stringify(productForm),
+    })
+    return res.json()
     // router.push('/order/cart')
   }
 
-  console.log(productForm)
   return (
     <form onSubmit={(e) => onSubmit(e)}>
       <main className='flex'>
@@ -57,7 +78,7 @@ const ProductDetailPage = (props: IProductDetailPage) => {
           <section className='max-w-lg justify-between items-stretch content-stretch col-start-1 self-end flex flex-col '>
             <nav className='text-md text-gray-500'>Products&nbsp;&nbsp;/&nbsp;&nbsp; Cookies</nav>
             <header className='text-4xl mt-4 font-bold'>{product.name}</header>
-            <div className='text-2xl mt-2'>{'$' + currentPrice}</div>
+            <div className='text-2xl mt-2'>{'$' + price}</div>
             <p className='mt-4 text-md text-gray-500'>Freshly baked in-house and shipped same day!</p>
           </section>
           {/* Product image */}
@@ -72,16 +93,25 @@ const ProductDetailPage = (props: IProductDetailPage) => {
               <div className='text-md'>Amount</div>
               <div className='grid grid-cols-2   items-center justify-items-center gap-2'>
                 {product.variants.map((v) => (
-                  <label className={`${selectedVariant === v.name ? 'ring-2 ring-indigo-500' : 'ring-2 ring-gray-300 cursor-pointer'} px-24 py-4 rounded-md`}>
+                  <label className={`${variant === v.name ? 'ring-2 ring-indigo-500' : 'ring-2 ring-gray-300 cursor-pointer'} px-24 py-4 rounded-md`}>
                     <input type='radio' name={v.name} value={v.price} className='sr-only' onClick={(e) => onClick(e)} />
                     <span>{v.name}</span>
                   </label>
                 ))}
               </div>
             </div>
-            <button type='submit' className='text-white mt-10 border b-2  p-4 rounded-md bg-primary-600 hover:bg-primary-700'>
-              Add to Cart
-            </button>
+            <div className='grid grid-cols-12 mt-10'>
+              <select className='col-span-2 row-start-1 text-sm' onChange={(e) => onChange(e)}>
+                <option selected value='1'>
+                  1
+                </option>
+                <option value='2'>2</option>
+                <option value='3'>3</option>
+              </select>
+              <button type='submit' className='col-start-4 col-span-9 row-start-1 text-white  border b-2  p-4 rounded-md bg-primary-600 hover:bg-primary-700'>
+                Add to Cart
+              </button>
+            </div>
           </section>
         </div>
       </main>

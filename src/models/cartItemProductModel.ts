@@ -1,7 +1,7 @@
 import Product from '@models/productModel'
 import mongoose from 'mongoose'
 
-const options = { discriminatorKey: 'CartItem' }
+const options = { discriminatorKey: 'CartItemProduct' }
 
 const cartItemProductSchema = new mongoose.Schema(
   {
@@ -15,6 +15,6 @@ const cartItemProductSchema = new mongoose.Schema(
   options
 )
 
-const CartItemProduct = mongoose?.models?.Product?.discriminators?.CartItemProduct || Product.discriminator('CartItem', cartItemProductSchema)
+const CartItemProduct = mongoose?.models?.Product?.discriminators?.CartItemProduct || Product.discriminator('CartItemProduct', cartItemProductSchema)
 
 export default CartItemProduct

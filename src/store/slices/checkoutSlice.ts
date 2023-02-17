@@ -49,7 +49,6 @@ export const checkoutSlice = createSlice({
   initialState,
   reducers: {
     setFormData(state, action) {
-      console.log(action.payload)
       state.formData[action.payload.camelCaseString] = action.payload.value
     },
   },

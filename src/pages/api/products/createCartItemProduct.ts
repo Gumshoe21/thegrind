@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     }).save()
 
     return res.status(200).json({
-      message: 'hehehehe it worked lol!',
+      message: 'Successfully created cartItemProduct.',
       cartItemProduct,
     })
 

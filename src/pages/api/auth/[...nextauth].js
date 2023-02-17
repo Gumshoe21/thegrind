@@ -16,6 +16,14 @@ export const authOptions = {
     }),
   ],
   database: process.env.MONGODB_URI,
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user }
+    },
+    async session({ session, user, token }) {
+      return { ...session, user, token }
+    },
+  },
 }
 
 export default NextAuth(authOptions)
