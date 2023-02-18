@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
-
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 interface IProductDetailPage {
   product: {
@@ -18,6 +18,7 @@ interface IProductDetailPage {
 }
 const ProductDetailPage = (props: IProductDetailPage) => {
   const { data: session } = useSession()
+  const router = useRouter()
   const { product } = props
 
   const [variant, setVariant] = useState(product.variants[0].name)
@@ -25,15 +26,14 @@ const ProductDetailPage = (props: IProductDetailPage) => {
   const [quantity, setQuantity] = useState('1')
 
   const [productForm, setProductForm] = useState({
-    user_id: session?.user?.id,
     product_id: product._id,
     name: product.name,
     variantName: variant,
     variantPrice: price,
     productQuantity: quantity,
   })
+
   const { variantName, variantPrice, productQuantity } = productForm
-  console.log(session)
   useEffect(() => {
     setPrice(product.variants[0].price)
   }, [])
@@ -41,6 +41,11 @@ const ProductDetailPage = (props: IProductDetailPage) => {
   async function onClick(e) {
     setPrice(product.variants.filter((v) => v.name === e.target.name)[0].price)
     setVariant(e.target.name)
+    setProductForm({
+      ...productForm,
+      variantPrice: e.target.value,
+      variantName: e.target.name,
+    })
   }
 
   async function onChange(e) {
@@ -50,9 +55,8 @@ const ProductDetailPage = (props: IProductDetailPage) => {
   async function onSubmit(e) {
     e.preventDefault()
     // 1. set variant name and variant price
-    setProductForm({
+    await setProductForm({
       ...productForm,
-      user_id: session?.user?.id,
       variantName: variant,
       variantPrice: price,
       productQuantity: quantity,
@@ -65,16 +69,13 @@ const ProductDetailPage = (props: IProductDetailPage) => {
       body: JSON.stringify(productForm),
     })
 
-    console.log(productForm)
-    return res.json()
-    // router.push('/order/cart')
+    router.push('/order/cart')
   }
   return (
     <form onSubmit={(e) => onSubmit(e)}>
       <main className='flex'>
         {/* Content container */}
         <div className='mx-auto lg:grid lg:grid-cols-2 max-w-2xl lg:max-w-7xl gap-x-16 px-8 py-24 '>
-          {/* Product details section */}
           <section className='max-w-lg justify-between items-stretch content-stretch col-start-1 self-end flex flex-col '>
             <nav className='text-md text-gray-500'>Products&nbsp;&nbsp;/&nbsp;&nbsp; Cookies</nav>
             <header className='text-4xl mt-4 font-bold'>{product.name}</header>
@@ -131,7 +132,6 @@ interface Params extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps = async (context) => {
   // p1, p2, etc.
   const productId = context.params!.productId.split('p')[1]
-  console.log(context)
   const res = await fetch('http://localhost:3000/api/products/getProduct', {
     method: 'POST',
     headers: {
@@ -144,22 +144,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const data = await res.json()
   let { product } = data
-  console.log(product)
 
-  /*
-  const products = []
-
-  for (const key in data) {
-    products.push({
-      // p1, p2, etc.
-      id: key,
-      ...data[key],
-    })
-  }
-
-  product = await products.find((p) => p.pId === productId)
-
-  */
   return {
     props: {
       product,
@@ -172,17 +157,7 @@ export async function getStaticPaths() {
   const res = await fetch('http://localhost:3000/api/products/getProducts')
   const data = await res.json()
   let { products } = data
-  /*
-  let products = []
 
-  for (const key in data) {
-    products.push({
-      id: key,
-      ...data[key],
-      key,
-    })
-  }
-*/
   const paths = products.map((p) => ({ params: { productId: 'p' + p.pId } }))
 
   return {

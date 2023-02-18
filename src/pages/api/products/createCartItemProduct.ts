@@ -20,7 +20,6 @@ export default async function handler(req, res) {
       message: 'Successfully created cartItemProduct.',
       cartItemProduct,
     })
-
   } catch (error) {
     console.log(error)
   }

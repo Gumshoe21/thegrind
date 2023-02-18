@@ -1,11 +1,11 @@
-import { authOptions } from '../api/auth/[...nextauth]'
 import React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from '@next/font/google'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { getServerSession } from 'next-auth/next'
 
+import { authOptions } from './../api/auth/[...nextauth]'
+import { getSession } from 'next-auth/react'
 const inter = Inter()
 
 interface ISummaryItem {
@@ -16,12 +16,28 @@ const SummaryItem = ({ children }: ISummaryItem) => {
 }
 
 const CartItem = (props) => {
+  async function onQuantitySelect(e) {
+    let reqBody = {
+      selectedQuantity: e.target.value,
+      product: {
+        name: props.name,
+        variant: props.variant,
+        price: props.price,
+      },
+    }
+    // req.body.product.variant
+    const req = await fetch('http://localhost:3000/api/carts/updateCart', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reqBody),
+    })
+  }
   return (
     <>
       {/* Container for everything below header */}
-      <div className='flex flex-row gap-8 border-t-gray-300 border-t-[1px] pt-8 justify-between'>
-        <div className='lg:col-span-2'>
-          <Image src='/img/products/p1.jpg' height='150' width='150' alt='Chocolate Chip Cookies' className='rounded-lg' />
+      <div className='flex xs:flex-row sm:gap-8 border-t-gray-300 border-t-[1px] pt-8 justify-between'>
+        <div className='lg:col-span-2 flex-shrink-0'>
+          <Image src='/img/products/p1.jpg' height='125' width='125' alt='Chocolate Chip Cookies' className='rounded-lg' />
         </div>
         <div className='lg:col-span-3 lg:-col-start-3 flex flex-col justify-between px-4 py-2'>
           <div className={`flex flex-col space-y-1 ${inter.className}`}>
@@ -31,12 +47,28 @@ const CartItem = (props) => {
           </div>
           <div>In Stock</div>
         </div>
-        <div className='lg:grid-start-6 grid-span-1 '>
-          <select className='rounded-lg'>
-            <option value='1'>1</option>
+
+        <div className='lg:grid-start-6 grid-span-1 flex flex-col flex-shrink-0 justify-between py-2'>
+          <select className='rounded-lg' onChange={(e) => onQuantitySelect(e)}>
+            {(() => {
+              let selectLimit = props.quantity < 10 ? 10 : props.quantity
+              let arr = []
+              for (let i = 1; i <= selectLimit; i++) {
+                arr.push(
+                  <option selected={props.quantity === i} value={i}>
+                    {i}
+                  </option>
+                )
+              }
+
+              return arr
+            })()}
           </select>
+          <div>
+            <span>Total: $90</span>
+          </div>
         </div>
-        <div className='flex flex-row justify-end ml-2'>
+        <div className='flex flex-row justify-end ml-2 py-2'>
           <span>
             <XMarkIcon className='h-4 w-4 '></XMarkIcon>
           </span>
@@ -48,16 +80,15 @@ const CartItem = (props) => {
 
 interface ICart {}
 const Cart = ({ cart }) => {
-  console.log(cart)
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
       <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
-      <div className='lg:grid lg:grid-cols-12 mt-2 gap-10 '>
+      <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
         {/* Item List */}
-        <section className='col-span-7 space-y-8 pr-4 overflow-y-scroll h-[calc(100vh-150px)]'>
-          {cart.items.map((item) => (
-            <CartItem name={item.name} variant={item.variant} price={item.price} />
+        <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
+          {cart?.items?.map((item) => (
+            <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} />
           ))}
         </section>
         {/* Checkout form/button */}
@@ -93,14 +124,30 @@ const Cart = ({ cart }) => {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getServerSession(context.req, context.res, authOptions)
+  const session = await getSession(context)
   console.log(session)
-
-  const res = await fetch('http://localhost:3000/api/carts/getCart')
-
+  const res = await fetch('http://localhost:3000/api/carts/getCart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${session.accessToken}`,
+    },
+    body: JSON.stringify({
+      user_id: session.user.id,
+    }),
+  })
   let data = await res.json()
+
   let { cart } = data
-  if (!cart) return
+
+  if (!cart) {
+    return {
+      props: {
+        cart: [],
+      },
+    }
+  }
+
   return {
     props: {
       cart,

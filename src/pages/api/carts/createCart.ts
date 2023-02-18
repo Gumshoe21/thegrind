@@ -1,23 +1,31 @@
 import Cart from '@models/cartModel'
 import Product from '@models/productModel'
 import connectDB from '@src/connectDB'
-
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '../auth/[...nextauth]'
+import mongoose from 'mongoose'
 connectDB()
 
 export default async function handler(req, res) {
+  const session = await getServerSession(req, res, authOptions)
+
+  let user_id = session?.user?.id
+  console.log(user_id)
   try {
     if (req.method !== 'POST') {
       return
     }
-
-    let { name, productQuantity, variantName, variantPrice, user_id, product_id } = req.body
+    if (!user_id) {
+      return res.status(401).json({ message: 'User not authenticated.' })
+    }
+    let { name, productQuantity, variantName, variantPrice, product_id } = req.body
 
     let cart = await Cart.findOne({ user: user_id, status: 'active' })
 
     // If a cart that both belongs to the user and has a status of 'active' doesn't exist, create one and add the item to it.
     if (!cart) {
       cart = await Cart.create({
-        user: req.body.user_id,
+        user: user_id,
         status: 'active',
         items: [
           {
@@ -30,12 +38,12 @@ export default async function handler(req, res) {
       })
       // Otherwise, if such a cart does exist, try to find an item in it with the name of the item added.
     } else {
-      let itemIndex = cart.items.findIndex((i) => i.name === name)
+      let itemIndex = cart.items.findIndex((i) =>i.variant === variantName&& i.name === name )
       // If the item is already in the cart, incrememnt its quantity.
       if (itemIndex > -1) {
         let cartItem = cart.items[itemIndex]
         let quantityDelta = +productQuantity - cartItem.quantity // 3-4  = -1
-        cartItem.quantity += +quantityDelta
+        cartItem.quantity += +productQuantity
         cart.items[itemIndex] = cartItem
         // Otherwise, add it to the cart as a new item.
       } else {
@@ -47,7 +55,7 @@ export default async function handler(req, res) {
         })
       }
 
-      cart = await cart.save()
+      await cart.save()
 
       // Return the existing, newly-updated cart.
       return res.status(200).json({

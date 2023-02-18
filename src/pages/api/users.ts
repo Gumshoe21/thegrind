@@ -11,7 +11,6 @@ export default async (req, res) => {
       const user = await User.find({})
 
       return res.status(200).send(user)
-      console.log('yo', user)
     }
   } catch (err) {
     console.log(err)

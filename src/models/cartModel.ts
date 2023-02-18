@@ -16,11 +16,13 @@ const cartSchema = new mongoose.Schema(
         quantity: { type: Number },
         variant: { type: String },
         price: { type: String },
+        
       },
     ],
     user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
+      required: true,
     },
   },
   { timestamps: true }
