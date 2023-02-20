@@ -2,45 +2,59 @@ import { HYDRATE } from 'next-redux-wrapper'
 import { bindActionCreators, createSlice } from '@reduxjs/toolkit'
 import { AppState } from '../index'
 
+export type Address = {
+  label: string
+  firstName: string
+  lastName: string
+  street: string
+  unit: string
+  city: string
+  country: string
+  state: string
+  zipCode: string
+  phone: string
+}
+
+const initialAddressState = {
+  label: '',
+  firstName: '',
+  lastName: '',
+  street: '',
+  unit: '',
+  city: '',
+  country: '',
+  state: '',
+  zipCode: '',
+  phone: '',
+}
+
 export interface CheckoutState {
   formData: {
-    email: string
-    firstName: string
-    lastName: string
-    address: string
-    apartment: string
-    city: string
-    country: string
-    state: string
-    postalCode: string
-    phone: string
+    creditCard: {
+      label: string
+      cardNumber: string
+      nameOnCard: string
+      expDate: string
+      cvc: string
+    }
+    shippingAddress: Address
+    billingAddress: Address
     deliveryMethod: string
-    paymentMethod: string
-    creditCardNumber: string
-    nameOnCard: string
-    expirationDate: string
-    cvc: string
   }
 }
 
 const initialState: CheckoutState = {
   formData: {
-    email: '',
-    firstName: '',
-    lastName: '',
-    address: '',
-    apartment: '',
-    city: '',
-    country: '',
-    state: '',
-    postalCode: '',
-    phone: '',
-    deliveryMethod: '',
-    paymentMethod: '',
-    creditCardNumber: '',
-    nameOnCard: '',
-    expirationDate: '',
-    cvc: '',
+    creditCard: {
+      label: '',
+      cardNumber: '',
+      nameOnCard: '',
+      expDate: '',
+      cvc: '',
+    },
+    shippingAddress: initialAddressState,
+    billingAddress: initialAddressState,
+    deliveryMethod: ''
   },
 }
 

@@ -10,7 +10,6 @@ export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
 
   let user_id = session?.user?.id
-  console.log(user_id)
   try {
     if (req.method !== 'POST') {
       return
@@ -31,14 +30,14 @@ export default async function handler(req, res) {
           {
             name: name,
             variant: variantName,
-            price: variantPrice,
-            quantity: productQuantity,
+            price: +variantPrice,
+            quantity: +productQuantity,
           },
         ],
       })
       // Otherwise, if such a cart does exist, try to find an item in it with the name of the item added.
     } else {
-      let itemIndex = cart.items.findIndex((i) =>i.variant === variantName&& i.name === name )
+      let itemIndex = cart.items.findIndex((i) => i.variant === variantName && i.name === name)
       // If the item is already in the cart, incrememnt its quantity.
       if (itemIndex > -1) {
         let cartItem = cart.items[itemIndex]
@@ -50,8 +49,8 @@ export default async function handler(req, res) {
         cart.items.push({
           name: name,
           variant: variantName,
-          price: variantPrice,
-          quantity: productQuantity,
+          price: +variantPrice,
+          quantity: +productQuantity,
         })
       }
 
@@ -70,5 +69,6 @@ export default async function handler(req, res) {
     })
   } catch (error) {
     console.log(error)
+    res.status(500).json({ message: 'Something went wrong', error })
   }
 }

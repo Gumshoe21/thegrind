@@ -3,9 +3,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Inter } from '@next/font/google'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-
 import { authOptions } from './../api/auth/[...nextauth]'
 import { getSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 const inter = Inter()
 
 interface ISummaryItem {
@@ -16,6 +16,7 @@ const SummaryItem = ({ children }: ISummaryItem) => {
 }
 
 const CartItem = (props) => {
+  const router = useRouter()
   async function onQuantitySelect(e) {
     let reqBody = {
       selectedQuantity: e.target.value,
@@ -31,6 +32,7 @@ const CartItem = (props) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(reqBody),
     })
+    router.reload()
   }
   return (
     <>
@@ -60,12 +62,11 @@ const CartItem = (props) => {
                   </option>
                 )
               }
-
               return arr
             })()}
           </select>
           <div>
-            <span>Total: $90</span>
+            <span>{props.item}</span>
           </div>
         </div>
         <div className='flex flex-row justify-end ml-2 py-2'>
@@ -80,6 +81,7 @@ const CartItem = (props) => {
 
 interface ICart {}
 const Cart = ({ cart }) => {
+  console.log(cart)
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
@@ -88,7 +90,7 @@ const Cart = ({ cart }) => {
         {/* Item List */}
         <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
           {cart?.items?.map((item) => (
-            <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} />
+            <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} itemTotal={item.total} />
           ))}
         </section>
         {/* Checkout form/button */}
@@ -110,7 +112,7 @@ const Cart = ({ cart }) => {
               </SummaryItem>
               <SummaryItem>
                 <span>Subtotal</span>
-                <span>$112.32</span>
+                <span>{`$${cart.totalPrice}`}</span>
               </SummaryItem>
             </ul>
             <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>

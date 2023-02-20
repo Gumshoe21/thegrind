@@ -54,7 +54,6 @@ const ProductDetailPage = (props: IProductDetailPage) => {
 
   async function onSubmit(e) {
     e.preventDefault()
-    // 1. set variant name and variant price
     await setProductForm({
       ...productForm,
       variantName: variant,
@@ -65,7 +64,6 @@ const ProductDetailPage = (props: IProductDetailPage) => {
     const res = await fetch('http://localhost:3000/api/carts/createCart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-
       body: JSON.stringify(productForm),
     })
 

@@ -14,6 +14,7 @@ export default async function handler(req, res) {
     if (req.method !== 'POST') {
       return
     }
+
     let cart = await Cart.findOne({ user: req.body.user_id, status: 'active' })
 
     res.status(200).json({

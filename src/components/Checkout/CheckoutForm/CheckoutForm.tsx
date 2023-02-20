@@ -24,7 +24,7 @@ const CheckoutForm = () => {
     // console.log(e)
     let { camelCaseString, value } = inputChangeHandler(e)
     dispatch(setFormData({ camelCaseString, value }))
-    // console.log(formData)
+    console.log(formData)
     // Prevent ring around selected delivery method from disappearing if user inputs text in another input.
     if (target.value === 'Standard' || target.value === 'Express') {
       setRadioSelected(target.value)

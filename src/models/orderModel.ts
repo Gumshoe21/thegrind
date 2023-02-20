@@ -1,58 +1,23 @@
 import mongoose from 'mongoose'
 
-const orderSchema = mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
-    email: {
-      type: String,
-    },
-    firstName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-    },
-    street: {
-      type: String,
-    },
-    unit: {
-      type: String,
-    },
-    city: {
-      type: String,
-    },
-    country: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    postal: {
-      type: String,
-    },
-    phone: {
-      type: String,
-    },
-    deliveryMethod: {
-      type: String,
-    },
     creditCard: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: 'CreditCard',
     },
-    nameOnCC: {
-      type: String,
+    mailingAddress: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Address',
     },
-    expDate: {
-      type: String,
+    billingAddress: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Address',
     },
-    cvc: {
-      type: String,
+    cart: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Cart',
     },
-    products: [
-      {
-        type: mongoose.Types.ObjectId,
-        ref: 'Product',
-      },
-    ],
     user: {
       type: mongoose.Types.ObjectId,
       ref: 'User',
