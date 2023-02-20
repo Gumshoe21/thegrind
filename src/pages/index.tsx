@@ -5,6 +5,7 @@ import About from '@home/About'
 import Yelp from '@home/Yelp/Yelp'
 import Order from '@home/Order'
 import Footer from '@home/Footer'
+import Head from 'next/head'
 
 const boxVariant = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.7 } },
@@ -12,13 +13,21 @@ const boxVariant = {
 }
 const Home = () => {
   return (
-    <main>
-      <Hero />
-      <About />
-      <Yelp />
-      <Order />
-      <Footer />
-    </main>
+    <>
+      <Head>
+        <title>The Grind</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+        <meta name='description' content='The word game that tests your vocabulary knowledge.' />
+      </Head>
+
+      <main>
+        <Hero />
+        <About />
+        <Yelp />
+        <Order />
+        <Footer />
+      </main>
+    </>
   )
 }
 export default Home
