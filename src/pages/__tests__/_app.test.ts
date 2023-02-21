@@ -24,5 +24,3 @@ describe('App', () => {
     expect(document.title).toBe('The Grind')
   })
 })
-
-

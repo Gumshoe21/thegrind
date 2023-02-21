@@ -1,19 +1,10 @@
-/*
-import { handler as getCart } from '@pages/api/carts/getCart'
-
-describe('api/carts/getCart', () => {
-  it('should return cart for user and with status of active', async () => {
-    const mockReq = {
-      user: '123',
-      status: 'active',
-    }
-  })
-})
-*/
+/**
+ * @jest-environment node
+ */
 
 import mongoose from 'mongoose'
 import { ObjectId } from 'mongodb'
-import { connectIMS, closeDatabase, clearDatabase } from './../db-handler'
+import { connectIMS, closeDatabase, clearDatabase } from '@src/mongoMemoryServer'
 import { createCart } from '@src/services/cart'
 import cartModel from '@models/cartModel'
 
@@ -35,20 +26,21 @@ afterAll(async () => await closeDatabase())
 /**
  * Product test suite.
  */
+
 describe('cart', () => {
   /**
    * Tests that a valid product can be created through the productService without throwing any errors.
    */
-  it('can be created correctly', async () => {
-    expect(async () => await createCart(cartComplete)).not.toThrow()
+  it('Can be created successfully.', async () => {
+    expect(async () => await createCart(newCart)).not.toThrow()
   })
 })
 
 /**
- * Complete product example.
+ * New cart example.
  */
 
-const cartComplete = {
+const newCart = {
   status: '123',
   user: new ObjectId(),
 }
