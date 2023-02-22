@@ -5,9 +5,15 @@
 import mongoose from 'mongoose'
 import { ObjectId } from 'mongodb'
 import { connectIMS, closeDatabase, clearDatabase } from '@src/mongoMemoryServer'
-import { createCart } from '@src/services/cart'
-import cartModel from '@models/cartModel'
-
+import { createCart, getCart } from '@src/services/cart'
+import Cart from '@models/cartModel'
+/**
+ * Create a new cart before each test.
+ *
+ */
+beforeEach(async () => {
+  await Cart.create({ user: new ObjectId(), status: 'open' })
+})
 /**
  * Connect to a new in-memory database before running any tests.
  */
@@ -27,12 +33,21 @@ afterAll(async () => await closeDatabase())
  * Product test suite.
  */
 
-describe('cart', () => {
+describe('/api/cart', () => {
   /**
-   * Tests that a valid product can be created through the productService without throwing any errors.
+   * Tests that a valid cart can be created without throwing any errors.
    */
   it('Can be created successfully.', async () => {
     expect(async () => await createCart(newCart)).not.toThrow()
+  })
+
+  /**
+   * Tests that a valid cart can be retrieved without throwing any errors.
+   */
+  it('Can be retrieved successfully.', async () => {
+    const cart = await getCart()
+    expect(cart).toBeTruthy()
+    expect(cart).toHaveProperty('status')
   })
 })
 

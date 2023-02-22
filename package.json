@@ -7,8 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:node": "jest --testMatch='**/*.node.test.[jt]s' --testEnvironment=node",
-    "test:jsdom": "jest --testMatch='**/!(*.node).test.[jt]s' --testEnvironment=jsdom"
+    "test:node": "jest --testMatch='**/*.node.test.[jt](s|sx)' --testEnvironment=node",
+    "test:jsdom": "jest --testMatch='**/!(*.node).test.[jt](s|sx)' --testEnvironment=jest-environment-jsdom"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.10",

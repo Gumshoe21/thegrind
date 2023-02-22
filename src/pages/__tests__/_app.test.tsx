@@ -1,6 +1,6 @@
-import { render, screen, debug } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import React from 'react'
-import App from '../pages/index'
+import App from '@pages/index'
 
 import 'intersection-observer'
 window.IntersectionObserver = jest.fn(() => ({

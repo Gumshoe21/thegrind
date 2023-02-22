@@ -1,6 +1,3 @@
-/**
- * @jest-environment node
- */
 import Cart from '@models/cartModel'
 
 /**
@@ -15,4 +12,8 @@ export const createCart = async (cart) => {
   }
 
   await Cart.create(cart)
+}
+
+export const getCart = async () => {
+  return await Cart.findOne()
 }
