@@ -3,7 +3,10 @@ import clientPromise from '@lib/mongodb'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import User from '@models/userModel'
+import mongoose from 'mongoose'
+import { ObjectId } from 'mongodb'
 import NextAuth, { NextAuthOptions } from 'next-auth'
+
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export const authOptions = {
@@ -21,6 +24,12 @@ export const authOptions = {
       return { ...token, ...user }
     },
     async session({ session, user, token }) {
+      if (user) {
+        let userId = new ObjectId(user.id)
+        const userObj = await User.findById(user.id)
+        user.addresses = userObj.addresses
+        console.log('userObj', userObj)
+      }
       return { ...session, user, token }
     },
   },
