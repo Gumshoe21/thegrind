@@ -30,6 +30,9 @@ const initialAddressState = {
 
 export interface CheckoutState {
   formData: {
+    contactInformation: {
+      email: string
+    }
     creditCard: {
       label: string
       cardNumber: string
@@ -45,6 +48,10 @@ export interface CheckoutState {
 
 const initialState: CheckoutState = {
   formData: {
+    contactInformation: {
+
+    email: '',
+    },
     creditCard: {
       label: '',
       cardNumber: '',
@@ -54,7 +61,7 @@ const initialState: CheckoutState = {
     },
     shippingAddress: initialAddressState,
     billingAddress: initialAddressState,
-    deliveryMethod: ''
+    deliveryMethod: '',
   },
 }
 
@@ -63,7 +70,7 @@ export const checkoutSlice = createSlice({
   initialState,
   reducers: {
     setFormData(state, action) {
-      state.formData[action.payload.camelCaseString] = action.payload.value
+      state.formData = action.payload
     },
   },
   extraReducers: {

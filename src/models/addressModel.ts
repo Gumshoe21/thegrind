@@ -4,6 +4,7 @@ const addressSchema = new mongoose.Schema({
   label: {
     type: String,
     required: true,
+    unique: true,
   },
   firstName: {
     type: String,

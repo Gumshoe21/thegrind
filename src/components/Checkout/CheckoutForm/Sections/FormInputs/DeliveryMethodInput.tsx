@@ -5,6 +5,8 @@ interface IDeliveryMethodInput {
   turnaroundTime: string
   price: string
   value: string
+  id: string
+  name: string
   isChecked: string
   onChange: ReactChangeEvent
 }
@@ -14,7 +16,7 @@ const DeliveryMethodInput = (props: IDeliveryMethodInput) => {
 
   return (
     <label className={`flex relative ${isChecked === props.value ? 'cursor-pointer ring-2 ring-indigo-500' : 'ring-2 ring-gray-300'} rounded-lg p-4`}>
-      <input type='radio' name='delivery-method' value={value} className='sr-only' onChange={(e) => props.onChange(e)} />
+      <input type='radio' name={props.name}  value={value} className='sr-only' onChange={(e) => props.onChange(e)} />
       <span className='flex flex-1'>
         <span className='flex flex-col'>
           <span id='delivery-method-0-label' className='block text-sm font-medium text-gray-900'>

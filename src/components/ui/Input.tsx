@@ -4,6 +4,7 @@ import { cva } from 'class-variance-authority'
 interface IInputFullProps {
   label: string
   id: string
+  name: string
   full?: boolean
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   intent?: 'full' | 'half' | 'three' | 'four' | null | undefined
@@ -30,7 +31,7 @@ export const Input = ({ intent, className, ...props }: IInputFullProps) => {
       <div className={input({ intent, className })} {...props}>
         <label htmlFor={`${props.id}`}>{props.label}</label>{' '}
         <div>
-          <input className='block w-full' type='text' id={`${props.id}`} name={`${props.id}`} onChange={(e) => props.onChange(e)} />
+          <input className='block w-full' type='text' id={`${props.id}`} name={`${props.name}`} onChange={(e) => props.onChange(e)} />
         </div>
       </div>
     </>

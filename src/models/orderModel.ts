@@ -2,17 +2,25 @@ import mongoose from 'mongoose'
 
 const orderSchema = new mongoose.Schema(
   {
+    contactInformation: {
+      email: {
+        type: String,
+      },
+    },
     creditCard: {
       type: mongoose.Types.ObjectId,
       ref: 'CreditCard',
     },
-    mailingAddress: {
+    shippingAddress: {
       type: mongoose.Types.ObjectId,
       ref: 'Address',
     },
     billingAddress: {
       type: mongoose.Types.ObjectId,
       ref: 'Address',
+    },
+    deliveryMethod: {
+      type: String,
     },
     cart: {
       type: mongoose.Types.ObjectId,

@@ -7,7 +7,7 @@ const creditCardSchema = new mongoose.Schema({
   cardNumber: {
     type: String,
   },
-  nameOnCC: {
+  nameOnCard: {
     type: String,
   },
   expDate: {
