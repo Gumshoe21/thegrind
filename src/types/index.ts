@@ -1,2 +1,14 @@
 export type ReactChangeEvent = (e: React.ChangeEvent<HTMLInputElement>) => void
 export type childrenProp = JSX.Element | JSX.Element[] | React.ReactNode[]
+export type Address = {
+  label: string
+  firstName: string
+  lastName: string
+  street: string
+  unit: string
+  city: string
+  country: string
+  state: string
+  zipCode: string
+  phone: string
+}

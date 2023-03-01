@@ -24,12 +24,10 @@ export const authOptions = {
       return { ...token, ...user }
     },
     async session({ session, user, token }) {
-      if (user) {
-        let userId = new ObjectId(user.id)
+      /*if (user) {
         const userObj = await User.findById(user.id)
         user.addresses = userObj.addresses
-        console.log('userObj', userObj)
-      }
+      }*/
       return { ...session, user, token }
     },
   },

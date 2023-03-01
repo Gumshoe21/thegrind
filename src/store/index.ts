@@ -1,6 +1,7 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import { productSlice } from './slices/productSlice'
 import { checkoutSlice } from './slices/checkoutSlice'
+import { profileSlice } from './slices/profileSlice'
 import { createWrapper } from 'next-redux-wrapper'
 
 export const makeStore = () =>
@@ -8,6 +9,7 @@ export const makeStore = () =>
     reducer: {
       [productSlice.name]: productSlice.reducer,
       [checkoutSlice.name]: checkoutSlice.reducer,
+      [profileSlice.name]: profileSlice.reducer
     },
     devTools: true,
   })
