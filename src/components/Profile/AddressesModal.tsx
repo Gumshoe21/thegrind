@@ -25,7 +25,7 @@ export default function AddressesModal({ children }) {
         View Saved Addresses
       </button>
 
-      <Transition appear show={modalIsOpen['viewAddresses']}>
+      <Transition appear show={modalIsOpen['viewAddresses']} as={Fragment}>
         <Dialog as='div' className='relative  ' onClose={() => closeModal('viewAddresses')}>
           <Transition.Child
             enter='ease-out duration-300'
@@ -34,11 +34,12 @@ export default function AddressesModal({ children }) {
             leave='ease-in duration-200'
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
+            as={Fragment}
           >
             <div className='fixed inset-0 bg-black bg-opacity-25' />
           </Transition.Child>
 
-          <div className='z-50 fixed inset-0  overflow-y-auto md:ml-[320px]'>
+          <div className='z-50 fixed inset-0 overflow-y-auto md:ml-[320px]'>
             <div className='flex min-h-full items-center justify-center p-4 text-center'>
               <Transition.Child
                 enter='ease-out duration-300'
@@ -47,6 +48,7 @@ export default function AddressesModal({ children }) {
                 leave='ease-in duration-200'
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
+                as={Fragment}
               >
                 <Dialog.Panel className='w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all'>
                   <div className='flex flex-column justify-between'>
@@ -63,7 +65,22 @@ export default function AddressesModal({ children }) {
                     <p className='text-sm text-gray-500'>
                       {/* If we have addresses, then display them.
                             If not, then display "No addresses saved." and "Add New Address" button. */}
-                      {/*{session?.user?.addresses?.length > 0 ? <div>1 </div> : <div>No addresses saved.</div>}*/}
+                      {session?.user?.addresses?.length > 0 ? (
+                        <div>
+                          {session.user.addresses.map((a) => (
+                            <address>
+                              <span className='font-bold'>{a.label}</span>
+                              <span>
+                                <span className='block'>{a.firstName} {a.lastName}</span>
+                                <span className='block'>{a.street}, {a.unit}</span>
+                                <span className='block'>{a.city}, {a.state} {a.zipCode}</span>
+                              </span>
+                            </address>
+                          ))}{' '}
+                        </div>
+                      ) : (
+                        <div>No addresses saved.</div>
+                      )}
                     </p>
                   </div>
 

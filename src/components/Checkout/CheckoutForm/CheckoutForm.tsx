@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DeliveryMethodInput from './Sections/FormInputs/DeliveryMethodInput'
 import RadioButton from '@ui/RadioButton'
 import PaymentMethodTextInput from './Sections/FormInputs/PaymentMethodTextInput'
@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { Input } from '@ui/Input'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { Address } from '@types'
 
 function SectionHeader({ title }: { title: string }) {
   return <h2 className='font-bold mb-4 text-md'>{title}</h2>
@@ -20,8 +21,15 @@ const CheckoutForm = () => {
   const formData = useSelector(selectFormData)
   const router = useRouter()
   const { data: session } = useSession()
-  const [radioSelected, setRadioSelected] = useState('Standard')
+  const [radioSelected, setRadioSelected] = useState<string>('Standard')
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
 
+  useEffect(() => {
+    let savedForm = JSON.parse(localStorage.getItem('checkoutFormData'))
+    if (savedForm) {
+      dispatch(setFormData(savedForm))
+    }
+  }, [])
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     // Obtain each part of a field's name.
     // e.g., 'shippingAddress.firstName' becomes ['shippingAddress', 'firstName']
@@ -29,11 +37,12 @@ const CheckoutForm = () => {
     let nameParts = e.target.name.split('.')
 
     if (nameParts.length === 1) {
-      dispatch(setFormData({ formData: { ...formData, [nameParts[0]]: e.target.value } }))
+      dispatch(setFormData({ ...formData, [nameParts[0]]: e.target.value }))
     } else if (nameParts.length === 2) {
       dispatch(setFormData({ ...formData, [nameParts[0]]: { ...formData[nameParts[0]], [nameParts[1]]: e.target.value } }))
     }
 
+    localStorage.setItem('checkoutFormData', JSON.stringify(formData))
     // Set radioSelected to its proper value only if the value is one of the radio values, i.e. eitehr 'Standard' or 'Express'
     if (e.target.value === 'Standard' || e.target.value === 'Express') {
       setRadioSelected(e.target.value)
@@ -42,7 +51,7 @@ const CheckoutForm = () => {
 
   async function onSubmit(e) {
     e.preventDefault()
-    const req = await fetch('http://localhost:3000/api/checkout/checkout', {
+    const req = await fetch('http://localhost:3000/api/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,6 +59,28 @@ const CheckoutForm = () => {
       },
     })
     // router.push(/checkout/confirmation')
+  }
+
+  async function handleSelectedAddress(e) {
+    const address = session?.user?.addresses?.find((a) => a.label === e.target.value)
+    setSelectedAddress(address)
+    dispatch(
+      setFormData({
+        ...formData,
+        shippingAddress: {
+          label: address?.label ?? '',
+          firstName: address?.firstName ?? '',
+          lastName: address?.lastName ?? '',
+          street: address?.street ?? '',
+          unit: address?.unit ?? '',
+          city: address?.city ?? '',
+          country: address?.country ?? '',
+          state: address?.state ?? '',
+          zipCode: address?.zipCode ?? '',
+          phone: address?.phone ?? '',
+        },
+      })
+    )
   }
 
   console.log(formData)
@@ -60,17 +91,22 @@ const CheckoutForm = () => {
           {/* Contact */}
           <h2 className='font-bold mb-4 text-md'>Contact Information</h2>
 
-          <Input label='Email' id='email' name='contactInformation.email' onChange={handleChange} />
+          <Input value={formData?.contactInformation?.email ?? ''} label='Email' id='email' name='contactInformation.email' onChange={handleChange} />
           {/* Shipping */}
           <div className='mt-8'>
             <h2 className='font-bold mb-4 text-md'>Shipping Information</h2>
 
-            {session?.user?.addresses ? (
+            {session?.user?.addresses.length > 0 ? (
               <div>
                 <select placeholder='Choose Saved Address'>
                   <option value='' disabled selected>
                     Choose Saved Address
                   </option>
+                  {session?.user?.addresses.map((a) => (
+                    <option value={a.label} onClick={(e) => handleSelectedAddress(e)}>
+                      {a.label}
+                    </option>
+                  ))}
                 </select>
               </div>
             ) : (
@@ -78,15 +114,74 @@ const CheckoutForm = () => {
             )}
 
             <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
-              <Input intent='half' label='First Name' id='shipping-first-name' name='shippingAddress.firstName' onChange={handleChange} />
-              <Input intent='half' label='Last Name' id='shipping-last-name' name='shippingAddress.lastName' onChange={handleChange} />
-              <Input intent='full' label='Address' id='shipping-street' name='shippingAddress.street' onChange={handleChange} />
-              <Input label='Apartment' id='shipping-unit' name='shippingAddress.unit' onChange={handleChange} />
-              <Input intent='half' label='City' id='shipping-city' name='shippingAddress.city' onChange={handleChange} />
-              <ShippingInfoCountrySelect id='country' name='shippingAddress.country' onChange={handleChange} />
-              <Input intent='half' label='State' id='shipping-state' name='shippingAddress.state' onChange={handleChange} />
-              <Input intent='half' label='Postal Code' id='shipping-postal-code' name='shippingAddress.zipCode' onChange={handleChange} />
-              <Input label='Phone' id='shipping-phone' name='shippingAddress.phone' onChange={handleChange} />
+              <Input
+                value={formData?.shippingAddress?.firstName ?? selectedAddress?.firstName ?? ''}
+                intent='half'
+                label='First Name'
+                id='shipping-first-name'
+                name='shippingAddress.firstName'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.lastName ?? selectedAddress?.lastName ?? ''}
+                intent='half'
+                label='Last Name'
+                id='shipping-last-name'
+                name='shippingAddress.lastName'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.street ?? selectedAddress?.street ?? ''}
+                intent='full'
+                label='Street'
+                id='shipping-street'
+                name='shippingAddress.street'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.unit ?? selectedAddress?.unit ?? ''}
+                label='Apartment'
+                id='shipping-unit'
+                name='shippingAddress.unit'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.city ?? selectedAddress?.city ?? ''}
+                intent='half'
+                label='City'
+                id='shipping-city'
+                name='shippingAddress.city'
+                onChange={handleChange}
+              />
+              <ShippingInfoCountrySelect
+                value={formData?.shippingAddress?.country ?? selectedAddress?.country ?? ''}
+                id='country'
+                name='shippingAddress.country'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.state ?? selectedAddress?.state ?? ''}
+                intent='half'
+                label='State'
+                id='shipping-state'
+                name='shippingAddress.state'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.zipCode ?? selectedAddress?.zipCode ?? ''}
+                intent='half'
+                label='Postal Code'
+                id='shipping-postal-code'
+                name='shippingAddress.zipCode'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.shippingAddress?.phone ?? selectedAddress?.phone ?? ''}
+                label='Phone'
+                id='shipping-phone'
+                name='shippingAddress.phone'
+                onChange={handleChange}
+              />
             </div>
           </div>
           {/* Delivery */}
@@ -128,10 +223,10 @@ const CheckoutForm = () => {
               </div>
             </fieldset>
             <div className='grid grid-cols-4 gap-2'>
-              <Input intent='four' label='Credit Card Number' id='card-number' name='creditCard.cardNumber' onChange={handleChange} />
-              <Input intent='four' label='Name on Card' id='name-on-card' name='creditCard.nameOnCard' onChange={handleChange} />
-              <Input intent='three' label='Expiration Date' id='exp-date' name='creditCard.expDate' onChange={handleChange} />
-              <Input label='CVC' id='cvc' name='creditCard.cvc' onChange={handleChange} />
+              <Input value={formData?.creditCard?.cardNumber ?? ''} intent='four' label='Credit Card Number' id='card-number' name='creditCard.cardNumber' onChange={handleChange} />
+              <Input value={formData?.creditCard?.nameOnCard ?? ''}intent='four' label='Name on Card' id='name-on-card' name='creditCard.nameOnCard' onChange={handleChange} />
+              <Input value={formData?.creditCard?.expDate ?? ''}intent='three' label='Expiration Date' id='exp-date' name='creditCard.expDate' onChange={handleChange} />
+              <Input value={formData?.creditCard?.cvc ?? ''}label='CVC' id='cvc' name='creditCard.cvc' onChange={handleChange} />
             </div>
           </div>
 

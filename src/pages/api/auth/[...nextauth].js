@@ -24,10 +24,9 @@ export const authOptions = {
       return { ...token, ...user }
     },
     async session({ session, user, token }) {
-      /*if (user) {
-        const userObj = await User.findById(user.id)
-        user.addresses = userObj.addresses
-      }*/
+  //    const userObj = await User.findById(user.id)
+//      user.addresses = userObj.addresses
+ //     user.cart = userObj.cart
       return { ...session, user, token }
     },
   },

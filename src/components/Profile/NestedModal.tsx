@@ -16,10 +16,24 @@ export default function NestedModal() {
   function openModal(k: string) {
     dispatch(setModalIsOpen({ ...modalIsOpen, [k]: true }))
   }
+
   function handleChange(e) {
     console.log(e.target.name, e.target.value)
-    setAddressForm((prevState) => ({ ...prevState, [e.target.name]: e.target.value }))
+    dispatch(setAddressForm({ ...addressForm, [e.target.name]: e.target.value }))
   }
+
+  async function handleSubmit(e) {
+    e.preventDefault()
+    const req = await fetch('http://localhost:3000/api/profile/addNewAddress', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ addressForm }),
+    })
+  }
+
+  console.log(addressForm)
   return (
     <Transition appear show={modalIsOpen['addNewAddress']}>
       {/* Set z-index to 51 due to Headless UI Dialogs having a default z-index of 50. 
@@ -37,7 +51,7 @@ export default function NestedModal() {
         </Transition.Child>
 
         <div className='fixed inset-0 overflow-y-auto md:ml-[320px]'>
-          <div className='flex min-h-full items-center justify-center p-4 text-center bg-blue-400'>
+          <div className='flex min-h-full items-center justify-center p-4 text-center '>
             <Transition.Child
               enter='ease-out duration-300'
               enterFrom='opacity-0 scale-95'
@@ -54,8 +68,7 @@ export default function NestedModal() {
                 </div>
                 <div className='mt-2'>
                   {/* Form */}
-                  {/* label,firstname,lastname,street,unit,city,country,state,zipcode,phone*/}
-                  <form>
+                  <form onSubmit={(e) => handleSubmit(e)}>
                     {/* grid container */}
                     <div className='grid grid-cols-2 gap-2'>
                       <div className='col-span-2'>
@@ -68,31 +81,72 @@ export default function NestedModal() {
                           <input className='block w-full' name='firstName' type='text' placeholder='First Name' onChange={(e) => handleChange(e)} />
                         </div>
                       </div>
-                      {/* <div className='col-span-1'>
-                            <input className='block w-full' name='lastName' type='text' placeholder='Last Name' onChange={(e) = handleChange(e)} value={addressForm.lastName} />
-                          </div>
-                          <div className='col-span-2'>
-                            <input className='block w-full' name='street' type='text' placeholder='Street' onChange={(e) = handleChange(e)} value={addressForm.street} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='unit' type='text' placeholder='Unit' onChange={(e) = handleChange(e)} value={addressForm.unit} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='city' type='text' placeholder='City' onChange={(e) = handleChange(e)} value={addressForm.city} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='country' type='text' placeholder='Country' onChange={(e) = handleChange(e)} value={addressForm.country} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='state' type='text' placeholder='State' onChange={(e) = handleChange(e)} value={addressForm.state} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='zipCode' type='text' placeholder='Zip Code' onChange={(e) = handleChange(e)} value={addressForm.zipCode} />
-                          </div>
-                          <div className='col-span-1'>
-                            <input className='block w-full' name='phone' type='text' placeholder='Phone' onChange={(e) = handleChange(e)} value={addressForm.phone} />
-                          </div>
-*/}
+                      <div className='col-span-1'>
+                        <input
+                          className='block w-full'
+                          name='lastName'
+                          type='text'
+                          placeholder='Last Name'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.lastName}
+                        />
+                      </div>
+                      <div className='col-span-2'>
+                        <input
+                          className='block w-full'
+                          name='street'
+                          type='text'
+                          placeholder='Street'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.street}
+                        />
+                      </div>
+                      <div className='col-span-1'>
+                        <input className='block w-full' name='unit' type='text' placeholder='Unit' onChange={(e) => handleChange(e)} value={addressForm.unit} />
+                      </div>
+                      <div className='col-span-1'>
+                        <input className='block w-full' name='city' type='text' placeholder='City' onChange={(e) => handleChange(e)} value={addressForm.city} />
+                      </div>
+                      <div className='col-span-1'>
+                        <input
+                          className='block w-full'
+                          name='country'
+                          type='text'
+                          placeholder='Country'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.country}
+                        />
+                      </div>
+                      <div className='col-span-1'>
+                        <input
+                          className='block w-full'
+                          name='state'
+                          type='text'
+                          placeholder='State'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.state}
+                        />
+                      </div>
+                      <div className='col-span-1'>
+                        <input
+                          className='block w-full'
+                          name='zipCode'
+                          type='text'
+                          placeholder='Zip Code'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.zipCode}
+                        />
+                      </div>
+                      <div className='col-span-1'>
+                        <input
+                          className='block w-full'
+                          name='phone'
+                          type='text'
+                          placeholder='Phone'
+                          onChange={(e) => handleChange(e)}
+                          value={addressForm.phone}
+                        />
+                      </div>
                       {/* submit */}
                       <div className='col-span-2 mt-4 flex flex-col'>
                         <button

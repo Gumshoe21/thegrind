@@ -12,3 +12,11 @@ export type Address = {
   zipCode: string
   phone: string
 }
+
+export type CreditCard = {
+  label: string,
+  cardNumber:string,
+  nameOnCC:string,
+  expData: string,
+  cvc: string,
+}

@@ -43,7 +43,9 @@ const cartSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
+
 cartSchema.set('toJSON', { virtuals: true })
+
 cartSchema.pre('save', function (next) {
   for (let i = 0; i < this.items.length; i++) {
     const item = this.items[i]

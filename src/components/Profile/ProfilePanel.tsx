@@ -15,11 +15,20 @@ export default function ProfilePanel() {
           <div>
             <Image width='150' height='150' className='rounded-full' src={session?.user?.image} alt='Profile picture' />
           </div>
+          <p>
+          {session?.user?.addresses.map((a) => (
+              <div> {a.label}
+</div>
+          ))}
+          </p>
+          {console.log(session)}
           <p className='mt-4'>{session?.user?.name}</p>
           <p className='mt-2'>{session?.user?.email}</p>
         </section>
         <section className='flex'>
-          <AddressesModal><NestedModal/></AddressesModal>
+          <AddressesModal>
+            <NestedModal />
+          </AddressesModal>
         </section>
       </div>
     </Tab.Panel>

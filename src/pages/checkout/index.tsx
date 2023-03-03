@@ -1,6 +1,10 @@
 import Image from 'next/image'
 import CheckoutForm from '@checkout/CheckoutForm/CheckoutForm'
-
+import { useSession } from 'next-auth/react'
+import Cart from '@models/cartModel'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from '@pages/api/auth/[...nextauth]'
+import {useRouter} from 'next/router'
 interface IFormHeader {
   children: JSX.Element
 }
@@ -8,7 +12,10 @@ const FormHeader = (props: IFormHeader) => {
   return <header className='font-bold text-md'>{props.children}</header>
 }
 
-const Checkout = () => {
+const Checkout = ({ cart }) => {
+  console.log(cart)
+  const { data: session } = useSession()
+  console.log(session)
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8'>
       {/* div - main grid with 2 columns*/}
@@ -19,9 +26,9 @@ const Checkout = () => {
           <h2 className='text-md font-bold'>Order Summary</h2>
           <div>
             <ul className='divide-y divide-gray-300'>
-              <SummaryItem />
-              <SummaryItem />
-              <SummaryItem />
+              {cart?.items?.map((i) => (
+                <SummaryItem name={i.name} variant={i.variant} totalPrice={i.totalPrice} quantity={i.quantity} />
+              ))}
             </ul>
           </div>
         </div>
@@ -38,7 +45,7 @@ const Checkout = () => {
           Remember max, min and ideal size when doing so
           Remember that the content of an element can impact how these values work together, too.
 
-flex-1 = 1 1 0%
+      flex-1 = 1 1 0%
       flex: 0 1 auto;  Default flex value 
 
       flex-shrink: 0 = don't shrink EVER
@@ -47,7 +54,27 @@ flex-1 = 1 1 0%
 */
 }
 
-const SummaryItem = () => { return (
+const SummaryItem = (props) => {
+  const router = useRouter()
+  async function onQuantitySelect(e) {
+    let reqBody = {
+      selectedQuantity: e.target.value,
+      product: {
+        name: props.name,
+        variant: props.variant,
+        price: props.price,
+      },
+    }
+    // req.body.product.variant
+    const req = await fetch('http://localhost:3000/api/carts/updateCart', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reqBody),
+    })
+    router.reload()
+  }
+
+  return (
     <li className='flex py-6 '>
       {/* flex: 0 0 auto - to prevent the image from shrinking at any screen size */}
       <div className='flex-shrink-0'>
@@ -59,11 +86,10 @@ const SummaryItem = () => { return (
           <div className='min-w-0 flex-1'>
             <h4 className='text-sm'>
               <a href='#' className='font-medium text-gray-700 hover:text-gray-800'>
-                Basic Tee
+                {props.name}
               </a>
             </h4>
-            <p className='mt-1 text-sm text-gray-500'>Black</p>
-            <p className='mt-1 text-sm text-gray-500'>Large</p>
+            <p className='mt-1 text-sm text-gray-500'>{props.variant}</p>
           </div>
 
           <div className='ml-4 flow-root flex-shrink-0'>
@@ -80,23 +106,58 @@ const SummaryItem = () => { return (
           </div>
         </div>
         <div className='flex flex-1 justify-between items-end'>
-          <div>$24.00</div>
+          <div>{props.totalPrice}</div>
           <div>
-            <select>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
-              <option value='1'>1</option>
+            <select className='rounded-lg' onChange={(e) => onQuantitySelect(e)}>
+              {(() => {
+                let selectLimit = props.quantity < 10 ? 10 : props.quantity
+                let arr = []
+                for (let i = 1; i <= selectLimit; i++) {
+                  arr.push(
+                    <option selected={props.quantity === i} value={i}>
+                      {i}
+                    </option>
+                  )
+                }
+                return arr
+              })()}
             </select>
           </div>
         </div>
       </div>
     </li>
   )
+}
+
+export async function getServerSideProps(context) {
+  const session = await getServerSession(context.req, context.res, authOptions)
+  let user_id = session?.user?.id
+  if (!session) {
+    return {
+      props: {},
+    }
+  }
+
+  let res = await fetch('http://localhost:3000/api/carts/getCart', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      user_id,
+    }),
+  })
+
+  let data = await res.json()
+
+  const { cart } = data
+
+  console.log('cart:::', JSON.stringify(cart))
+  return {
+    props: {
+      cart,
+    },
+  }
 }
 
 export default Checkout

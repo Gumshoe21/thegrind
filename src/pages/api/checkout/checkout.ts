@@ -32,11 +32,9 @@ export default async function handler(req, res) {
     })
 */
     let newOrder = await Order.create({
-      user: req.body.user,
+      user: user_id,
       cart: req.body.cart,
-      contactInformation: {
-        email: req.body.contactInformation.email,
-      },
+      contactInformation: req.body.contactInformation,
       creditCard: req.body.creditCard,
       shippingAddress: req.body.mailingAddress,
       billingAddress: req.body.billingAddress,

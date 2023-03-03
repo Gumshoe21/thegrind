@@ -9,6 +9,7 @@ interface IInputFullProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   intent?: 'full' | 'half' | 'three' | 'four' | null | undefined
   className?: undefined
+  value?: string
 }
 
 const input = cva(['flex', 'flex-col', 'gap-2'], {
@@ -31,7 +32,7 @@ export const Input = ({ intent, className, ...props }: IInputFullProps) => {
       <div className={input({ intent, className })} {...props}>
         <label htmlFor={`${props.id}`}>{props.label}</label>{' '}
         <div>
-          <input className='block w-full' type='text' id={`${props.id}`} name={`${props.name}`} onChange={(e) => props.onChange(e)} />
+          <input className='block w-full' type='text' value={props.value} id={`${props.id}`} name={`${props.name}`} onChange={(e) => props.onChange(e)} />
         </div>
       </div>
     </>
