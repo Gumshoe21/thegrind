@@ -5,6 +5,8 @@ import { Inter } from '@next/font/google'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { authOptions } from './../api/auth/[...nextauth]'
 import { getSession } from 'next-auth/react'
+
+import { getServerSession } from 'next-auth/next'
 import { useRouter } from 'next/router'
 const inter = Inter()
 
@@ -27,7 +29,7 @@ const CartItem = (props) => {
       },
     }
     // req.body.product.variant
-    const req = await fetch('http://localhost:3000/api/carts/updateCart', {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/updateCart`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(reqBody),
@@ -51,16 +53,13 @@ const CartItem = (props) => {
         </div>
 
         <div className='lg:grid-start-6 grid-span-1 flex flex-col flex-shrink-0 justify-between py-2'>
-          <select className='rounded-lg' onChange={(e) => onQuantitySelect(e)}>
+          <select defaultValue={props.quantity} className='rounded-lg' onChange={(e) => onQuantitySelect(e)}>
             {(() => {
-              let selectLimit = props.quantity < 10 ? 10 : props.quantity
-              let arr = []
+              let selectLimit = props.quantity <= 10 ? 10 : props.quantity
+
+              let arr: JSX.Element[] = []
               for (let i = 1; i <= selectLimit; i++) {
-                arr.push(
-                  <option selected={props.quantity === i} value={i}>
-                    {i}
-                  </option>
-                )
+                arr.push(<option value={i}>{i}</option>)
               }
               return arr
             })()}
@@ -126,16 +125,16 @@ const Cart = ({ cart }) => {
 }
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  const session = await getServerSession(context.req, context.res, authOptions)
+  // const session = await getSession(context)
   console.log(session)
-  const res = await fetch('http://localhost:3000/api/carts/getCart', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/getCart`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.accessToken}`,
     },
     body: JSON.stringify({
-      user_id: session.user.id,
+      user_id: session?.user?.id,
     }),
   })
   let data = await res.json()

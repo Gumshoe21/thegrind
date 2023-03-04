@@ -3,6 +3,7 @@ const nextConfig = {
   basePath: '',
   reactStrictMode: true,
   swcMinify: true,
+
   images: {
     domains: ['https://www.tailwind.ui.com'],
     remotePatterns: [

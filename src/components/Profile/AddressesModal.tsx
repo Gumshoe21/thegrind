@@ -65,15 +65,21 @@ export default function AddressesModal({ children }) {
                     <p className='text-sm text-gray-500'>
                       {/* If we have addresses, then display them.
                             If not, then display "No addresses saved." and "Add New Address" button. */}
-                      {session?.user?.addresses?.length > 0 ? (
+                      {session?.user?.addresses ? (
                         <div>
                           {session.user.addresses.map((a) => (
                             <address>
                               <span className='font-bold'>{a.label}</span>
                               <span>
-                                <span className='block'>{a.firstName} {a.lastName}</span>
-                                <span className='block'>{a.street}, {a.unit}</span>
-                                <span className='block'>{a.city}, {a.state} {a.zipCode}</span>
+                                <span className='block'>
+                                  {a.firstName} {a.lastName}
+                                </span>
+                                <span className='block'>
+                                  {a.street}, {a.unit}
+                                </span>
+                                <span className='block'>
+                                  {a.city}, {a.state} {a.zipCode}
+                                </span>
                               </span>
                             </address>
                           ))}{' '}

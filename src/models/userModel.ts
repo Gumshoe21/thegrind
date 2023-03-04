@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
     {
       label: {
         type: String,
-        unique:true
+        unique: true,
       },
       firstName: {
         type: String,
@@ -50,7 +50,6 @@ const userSchema = new mongoose.Schema({
     {
       label: {
         type: String,
-        unique: true,
       },
       cardNumber: {
         type: String,

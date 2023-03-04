@@ -24,7 +24,7 @@ export default function NestedModal() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    const req = await fetch('http://localhost:3000/api/profile/addNewAddress', {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/profile/addNewAddress`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

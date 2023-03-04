@@ -1,5 +1,9 @@
 import { Tab } from '@headlessui/react'
 
+interface ITabButton {
+  label: string
+}
+
 export default function TabButton({ label }: ITabButton) {
   return (
     <Tab as='li' className={({ selected }) => (selected ? 'bg-gray-300' : '')}>

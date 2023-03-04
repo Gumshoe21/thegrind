@@ -4,12 +4,14 @@ import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { ParsedUrlQuery } from 'querystring'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-
+import Product from '@models/productModel'
+import connectDB from '@src/connectDB'
 interface IProductDetailPage {
   product: {
     name: string
     imageAlt: string
     imageSrc: string
+    _id: string
     variants: {
       name: string
       price: string
@@ -20,7 +22,7 @@ const ProductDetailPage = (props: IProductDetailPage) => {
   const { data: session } = useSession()
   const router = useRouter()
   const { product } = props
-
+  console.log(product)
   const [variant, setVariant] = useState(product.variants[0].name)
   const [price, setPrice] = useState(product.variants[0].price)
   const [quantity, setQuantity] = useState('1')
@@ -61,7 +63,7 @@ const ProductDetailPage = (props: IProductDetailPage) => {
       productQuantity: quantity,
     })
 
-    const res = await fetch('http://localhost:3000/api/carts/createCart', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/createCart`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(productForm),
@@ -126,23 +128,55 @@ interface Params extends ParsedUrlQuery {
 }
 */
 }
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  // p1, p2, etc.
-  const productId = context.params!.productId.split('p')[1]
-  const res = await fetch('http://localhost:3000/api/products/getProduct', {
-    method: 'POST',
+export async function getServerSideProps(context) {
+  const productIdString = context?.params?.productId as string
+  const productId = productIdString.split('p')[1]
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/getProduct?productId=${productId}`, {
     headers: {
-      'Content-Type': 'application/json',
+      Accept: 'application/json',
     },
-    body: JSON.stringify({
-      productId,
-    }),
   })
 
   const data = await res.json()
   let { product } = data
 
+  /*
+  let product = await Product.findOne({ pId: productId })
+
+  console.log('product here:::')
+  console.log(product)
+  product = JSON.stringify(product)
+
+  */
+  return {
+    props: {
+      product,
+    },
+  }
+}
+/*
+export const getStaticProps: GetStaticProps = async (context) => {
+  // p1, p2, etc.
+  const productIdString = context?.params?.productId as string
+  const productId = productIdString.split('p')[1]
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/getProduct?productId=${productId}`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  const data = await res.json()
+  let { product } = data
+
+  /*
+ let product = await Product.findOne({ pId: productId })
+
+  console.log('product here:::')
+  console.log(product)
+  product = JSON.stringify(product)
+
+  */
+/*
   return {
     props: {
       product,
@@ -150,17 +184,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
     revalidate: 30,
   }
 }
-
+*/
+/*
 export async function getStaticPaths() {
-  const res = await fetch('http://localhost:3000/api/products/getProducts')
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/getProducts`, {
+    headers: {
+      Accept: 'application/json',
+    },
+  })
   const data = await res.json()
   let { products } = data
 
+  //  let products = await Product.find({}, 'pId')
   const paths = products.map((p) => ({ params: { productId: 'p' + p.pId } }))
-
+  console.log('paths', paths)
   return {
     paths,
     fallback: false,
   }
 }
+*/
 export default ProductDetailPage

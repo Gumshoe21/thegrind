@@ -25,12 +25,12 @@ const CheckoutForm = () => {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null)
 
   useEffect(() => {
-    let savedForm = JSON.parse(localStorage.getItem('checkoutFormData'))
+    let savedForm = JSON.parse(localStorage.getItem('checkoutFormData')!)
     if (savedForm) {
       dispatch(setFormData(savedForm))
     }
   }, [])
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
+  function handleChange(e) {
     // Obtain each part of a field's name.
     // e.g., 'shippingAddress.firstName' becomes ['shippingAddress', 'firstName']
     // e.g., 'paypal' becomes ['paypal']
@@ -51,19 +51,19 @@ const CheckoutForm = () => {
 
   async function onSubmit(e) {
     e.preventDefault()
-    const req = await fetch('http://localhost:3000/api/checkout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        body: JSON.stringify(formData),
-      },
-    })
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				body: JSON.stringify(formData)
+			}
+		})
     // router.push(/checkout/confirmation')
   }
 
   async function handleSelectedAddress(e) {
     const address = session?.user?.addresses?.find((a) => a.label === e.target.value)
-    setSelectedAddress(address)
+    setSelectedAddress(address!)
     dispatch(
       setFormData({
         ...formData,
@@ -96,7 +96,7 @@ const CheckoutForm = () => {
           <div className='mt-8'>
             <h2 className='font-bold mb-4 text-md'>Shipping Information</h2>
 
-            {session?.user?.addresses.length > 0 ? (
+            {session?.user?.addresses ? (
               <div>
                 <select placeholder='Choose Saved Address'>
                   <option value='' disabled selected>
@@ -223,10 +223,31 @@ const CheckoutForm = () => {
               </div>
             </fieldset>
             <div className='grid grid-cols-4 gap-2'>
-              <Input value={formData?.creditCard?.cardNumber ?? ''} intent='four' label='Credit Card Number' id='card-number' name='creditCard.cardNumber' onChange={handleChange} />
-              <Input value={formData?.creditCard?.nameOnCard ?? ''}intent='four' label='Name on Card' id='name-on-card' name='creditCard.nameOnCard' onChange={handleChange} />
-              <Input value={formData?.creditCard?.expDate ?? ''}intent='three' label='Expiration Date' id='exp-date' name='creditCard.expDate' onChange={handleChange} />
-              <Input value={formData?.creditCard?.cvc ?? ''}label='CVC' id='cvc' name='creditCard.cvc' onChange={handleChange} />
+              <Input
+                value={formData?.creditCard?.cardNumber ?? ''}
+                intent='four'
+                label='Credit Card Number'
+                id='card-number'
+                name='creditCard.cardNumber'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.creditCard?.nameOnCard ?? ''}
+                intent='four'
+                label='Name on Card'
+                id='name-on-card'
+                name='creditCard.nameOnCard'
+                onChange={handleChange}
+              />
+              <Input
+                value={formData?.creditCard?.expDate ?? ''}
+                intent='three'
+                label='Expiration Date'
+                id='exp-date'
+                name='creditCard.expDate'
+                onChange={handleChange}
+              />
+              <Input value={formData?.creditCard?.cvc ?? ''} label='CVC' id='cvc' name='creditCard.cvc' onChange={handleChange} />
             </div>
           </div>
 

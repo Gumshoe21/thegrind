@@ -1,3 +1,5 @@
+import { SVGProps } from 'react'
+
 import { ReactChangeEvent } from '@types'
 
 interface IDeliveryMethodInput {
@@ -10,13 +12,16 @@ interface IDeliveryMethodInput {
   isChecked: string
   onChange: ReactChangeEvent
 }
+interface SVGPropsWithHidden extends SVGProps<SVGSVGElement> {
+  hidden?: boolean
+}
 
-const DeliveryMethodInput = (props: IDeliveryMethodInput) => {
+const DeliveryMethodInput = (props: IDeliveryMethodInput & SVGPropsWithHidden) => {
   const { label, turnaroundTime, price, value, isChecked } = props
 
   return (
     <label className={`flex relative ${isChecked === props.value ? 'cursor-pointer ring-2 ring-indigo-500' : 'ring-2 ring-gray-300'} rounded-lg p-4`}>
-      <input type='radio' name={props.name}  value={value} className='sr-only' onChange={(e) => props.onChange(e)} />
+      <input type='radio' name={props.name} value={value} className='sr-only' onChange={(e) => props.onChange(e)} />
       <span className='flex flex-1'>
         <span className='flex flex-col'>
           <span id='delivery-method-0-label' className='block text-sm font-medium text-gray-900'>
@@ -31,7 +36,7 @@ const DeliveryMethodInput = (props: IDeliveryMethodInput) => {
         </span>
       </span>
       <svg
-        hidden={isChecked !== props.value && 'hidden'}
+        {...(isChecked !== props.value && { hidden: true })}
         className='h-5 w-5 text-indigo-600'
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 20 20'

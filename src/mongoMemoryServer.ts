@@ -11,14 +11,16 @@ export const connectIMS = async () => {
   mongod = await MongoMemoryServer.create()
   const uri = mongod.getUri()
 
+  /* 
   const mongooseOpts = {
     useNewUrlParser: true,
   }
+*/
 
   if (version.startsWith('v16') || (version.startsWith('v14') && version.endsWith('-nightly'))) {
     global.TextEncoder = TextEncoder
   }
-  await mongoose.connect(uri, mongooseOpts)
+  await mongoose.connect(uri, {})
 }
 
 /**
@@ -38,7 +40,7 @@ export const clearDatabase = async () => {
 
   for (const key in collections) {
     const collection = collections[key]
-    await collection.deleteMany()
+    await collection.deleteMany({})
   }
 }
 

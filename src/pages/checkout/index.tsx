@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import Cart from '@models/cartModel'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@pages/api/auth/[...nextauth]'
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 interface IFormHeader {
   children: JSX.Element
 }
@@ -66,7 +66,7 @@ const SummaryItem = (props) => {
       },
     }
     // req.body.product.variant
-    const req = await fetch('http://localhost:3000/api/carts/updateCart', {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/updateCart`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(reqBody),
@@ -111,7 +111,7 @@ const SummaryItem = (props) => {
             <select className='rounded-lg' onChange={(e) => onQuantitySelect(e)}>
               {(() => {
                 let selectLimit = props.quantity < 10 ? 10 : props.quantity
-                let arr = []
+                let arr: JSX.Element[] = []
                 for (let i = 1; i <= selectLimit; i++) {
                   arr.push(
                     <option selected={props.quantity === i} value={i}>
@@ -138,7 +138,7 @@ export async function getServerSideProps(context) {
     }
   }
 
-  let res = await fetch('http://localhost:3000/api/carts/getCart', {
+  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/getCart`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

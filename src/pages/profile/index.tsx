@@ -4,9 +4,7 @@ import TabButton from '@profile/TabButton'
 import OrdersPanel from '@profile/OrdersPanel'
 import ProfilePanel from '@profile/ProfilePanel'
 
-interface ITabButton {
-  label: string
-}
+
 
 export default function Profile() {
   return (
