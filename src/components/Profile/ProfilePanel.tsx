@@ -17,7 +17,7 @@ export default function ProfilePanel() {
               <Image width='150' height='150' className='rounded-full' src={session?.user?.image!} alt='Profile picture' />
             </div>
             <p>
-              {session?.user?.addresses.map((a) => (
+              {session?.user?.addresses?.map((a) => (
                 <div> {a.label}</div>
               ))}
             </p>

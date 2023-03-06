@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
     {
       label: {
         type: String,
-        unique: true,
       },
       firstName: {
         type: String,
