@@ -44,15 +44,13 @@ const Navbar = () => {
           {/* nav items */}
           <div className={`${showNav ? '' : 'hidden'} w-full md:block md:w-auto text-black  uppercase font-sm`} id='navbar-default'>
             <ul className='flex flex-col p-4 text-center md:text-left rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 items-center dark:border-gray-700'>
+              {/*}
               <li>
                 <Link href='/contact' className='block py-2 pr-4 pl-3 text-black rounded md:bg-transparent md:p-0 ' aria-current='page'>
                   Contact
                 </Link>
               </li>
-              {/*
-
-
-*/}
+              */}
               <li>
                 <Link href='/order/categories/chosen&=' className='block py-2 pr-4 pl-3 text-black rounded md:bg-transparent md:p-0 ' aria-current='page'>
                   Order
