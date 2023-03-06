@@ -94,7 +94,7 @@ const Cart = ({ cart }) => {
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
       <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
-      {cart.length > 0 && (
+      {cart?.items?.length > 0 && (
         <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
           {/* Item List */}
           <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
@@ -109,19 +109,15 @@ const Cart = ({ cart }) => {
               <ul className='mt-5'>
                 <SummaryItem>
                   <span>Subtotal</span>
-                  <span>${cart.totalPrice}</span>
+                  <span>${cart.totalPrice.toFixed(2)}</span>
                 </SummaryItem>
                 <SummaryItem>
                   <span>Shipping Estimate</span>
                   <span>$5.00</span>
                 </SummaryItem>
                 <SummaryItem>
-                  <span>Tax Estimate</span>
-                  <span>$8.32</span>
-                </SummaryItem>
-                <SummaryItem>
                   <span>Estimated Total</span>
-                  <span>${+cart.totalPrice + 5}</span>
+                  <span>${(+cart.totalPrice + 5).toFixed(2)}</span>
                 </SummaryItem>
               </ul>
               <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
