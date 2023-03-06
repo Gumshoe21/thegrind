@@ -42,10 +42,9 @@ const Yelp = () => {
         <header className={`${jost.className} font-light pt-6 font-sans tracking-wider uppercase text-3xl`}>People love us on</header>
         <Image src='/img/yelp-logo.svg' alt='Headshot' height='200' width='200' className='' />
       </div>
-      <div className='flex flex-col md:flex-row items-center justify-center gap-20'>
+      <div className='flex flex-col md:flex-row items-center justify-center gap-10'>
         <motion.div variants={variants.first} initial='hidden' animate={control} className='basis-1/3 flex-shrink-0'>
           <YelpReview name='Fiona Martinez' src='/img/headshot-1.jpeg' height='175' width='175' className=' rounded-full border-white border-2'>
-
             &quot;Some of the best coffee I&apos;ve ever tasted. Great place to study, too.&quot;
           </YelpReview>
         </motion.div>
