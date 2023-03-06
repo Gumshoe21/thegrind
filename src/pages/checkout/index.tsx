@@ -5,23 +5,40 @@ import Cart from '@models/cartModel'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@pages/api/auth/[...nextauth]'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
+import { useRef } from 'react'
+
 interface IFormHeader {
   children: JSX.Element
 }
 const FormHeader = (props: IFormHeader) => {
   return <header className='font-bold text-md'>{props.children}</header>
 }
+const CheckoutSummaryItem = ({ children }) => {
+  return <li className='flex justify-between gap-8'>{children}</li>
+}
 
 const Checkout = ({ cart }) => {
-  console.log(cart)
   const { data: session } = useSession()
-  console.log(session)
+
+  const formRef = useRef(null)
+  async function handleClick(e) {
+    e.preventDefault()
+    if (formRef.current) {
+
+    formRef.current.requestSubmit()
+    //  console.log(formRef.current)
+    }
+
+    //    formRef.current.dispatchEvent(new Event('submit'))
+    // router.redirect('/checkout/confirmation')
+  }
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8'>
       {/* div - main grid with 2 columns*/}
       <div className='lg:grid lg:grid-cols-2 gap-x-20'>
         {/* LEFT PART - FORM */}
-        <CheckoutForm />
+        <CheckoutForm formRef={formRef} />
         <div className='mt-12 sm:mt-0'>
           <h2 className='text-md font-bold'>Order Summary</h2>
           <div>
@@ -30,6 +47,28 @@ const Checkout = ({ cart }) => {
                 <SummaryItem name={i.name} variant={i.variant} totalPrice={i.totalPrice} quantity={i.quantity} />
               ))}
             </ul>
+          </div>
+          <div className='bg-gray-100 flex flex-col justify-center py-8 px-6 rounded-lg'>
+            <header className='font-bold text-lg'>Order Summary</header>
+            <ul className='mt-5'>
+              <CheckoutSummaryItem>
+                <span>Subtotal</span>
+                <span>${cart.totalPrice}</span>
+              </CheckoutSummaryItem>
+              <CheckoutSummaryItem>
+                <span>Shipping Estimate</span>
+                <span>$5.00</span>
+              </CheckoutSummaryItem>
+              <CheckoutSummaryItem>
+                <span>Tax Estimate</span>
+                <span>$8.32</span>
+              </CheckoutSummaryItem>
+              <CheckoutSummaryItem>
+                <span>Estimated Total</span>
+                <span>${+cart.totalPrice + 5}</span>
+              </CheckoutSummaryItem>
+            </ul>
+            <button onClick={handleClick} className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'></button>
           </div>
         </div>
       </div>

@@ -94,7 +94,7 @@ const Cart = ({ cart }) => {
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
       <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
-      {cart.length > 0 && (
+      {cart && (
         <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
           {/* Item List */}
           <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
@@ -109,7 +109,7 @@ const Cart = ({ cart }) => {
               <ul className='mt-5'>
                 <SummaryItem>
                   <span>Subtotal</span>
-                  <span>$99.00</span>
+                  <span>${cart.totalPrice}</span>
                 </SummaryItem>
                 <SummaryItem>
                   <span>Shipping Estimate</span>
@@ -120,8 +120,8 @@ const Cart = ({ cart }) => {
                   <span>$8.32</span>
                 </SummaryItem>
                 <SummaryItem>
-                  <span>Subtotal</span>
-                  <span>{`$${cart.totalPrice}`}</span>
+                  <span>Estimated Total</span>
+                  <span>${+cart.totalPrice + 5}</span>
                 </SummaryItem>
               </ul>
               <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
@@ -135,8 +135,13 @@ const Cart = ({ cart }) => {
         <>
           <div>Your cart is empty. What, you don't want cookies? Give me your money, or something.</div>
           <div>
-            <Link href='/order/categories/chosen&=' className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
-'>Continue shopping.</Link>
+            <Link
+              href='/order/categories/chosen&='
+              className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
+'
+            >
+              Continue shopping.
+            </Link>
           </div>
         </>
       )}

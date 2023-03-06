@@ -16,7 +16,7 @@ function SectionHeader({ title }: { title: string }) {
   return <h2 className='font-bold mb-4 text-md'>{title}</h2>
 }
 
-const CheckoutForm = () => {
+const CheckoutForm = (props) => {
   const dispatch = useDispatch()
   const formData = useSelector(selectFormData)
   const router = useRouter()
@@ -51,13 +51,14 @@ const CheckoutForm = () => {
 
   async function onSubmit(e) {
     e.preventDefault()
+
     const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				body: JSON.stringify(formData)
-			}
-		})
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        body: JSON.stringify(formData),
+      },
+    })
     // router.push(/checkout/confirmation')
   }
 
@@ -87,7 +88,7 @@ const CheckoutForm = () => {
   return (
     <div>
       <div>
-        <form onSubmit={(e) => onSubmit(e)}>
+        <form ref={props.formRef} onSubmit={(e) => onSubmit(e)}>
           {/* Contact */}
           <h2 className='font-bold mb-4 text-md'>Contact Information</h2>
 
