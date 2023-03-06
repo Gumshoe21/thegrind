@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@pages/api/auth/[...nextauth]'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { useRef } from 'react'
+import React,{ useRef }from 'react'
 
 interface IFormHeader {
   children: JSX.Element
@@ -21,7 +21,7 @@ const CheckoutSummaryItem = ({ children }) => {
 const Checkout = ({ cart }) => {
   const { data: session } = useSession()
 
-  const formRef = useRef(null)
+  const formRef: React.RefObject<HTMLFormElement> = useRef(null)
   async function handleClick(e) {
     e.preventDefault()
     if (formRef.current) {
