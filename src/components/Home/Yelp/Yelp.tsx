@@ -43,21 +43,22 @@ const Yelp = () => {
         <Image src='/img/yelp-logo.svg' alt='Headshot' height='200' width='200' className='' />
       </div>
       <div className='flex flex-col md:flex-row items-center justify-center gap-20'>
-        <motion.div variants={variants.first} initial='hidden' animate={control} className=''>
-          <YelpReview name='Fiona Martinez' src='/img/headshot-1.jpeg' height='175' width='175' className='rounded-full border-white border-2'>
+        <motion.div variants={variants.first} initial='hidden' animate={control} className='basis-1/3 flex-shrink-0'>
+          <YelpReview name='Fiona Martinez' src='/img/headshot-1.jpeg' height='175' width='175' className=' rounded-full border-white border-2'>
+
             &quot;Some of the best coffee I&apos;ve ever tasted. Great place to study, too.&quot;
           </YelpReview>
         </motion.div>
 
-        <motion.div ref={ref} variants={variants.second} initial='hidden' animate={control}>
+        <motion.div ref={ref} variants={variants.second} initial='hidden' animate={control} className='flex-shrink-0 basis-1/3'>
           <YelpReview name='John Mason' src='/img/headshot-2.jpeg' height='175' width='175' className='rounded-full border-white border-2'>
-            &quot;Some of the best coffee I&apos;ve ever tasted. Great place to study, too.&quot;
+            &quot;I love the atmosphere of this place. The owners are very kind and give off a warm vibe.&quot;
           </YelpReview>
         </motion.div>
 
-        <motion.div variants={variants.third} initial='hidden' animate={control}>
+        <motion.div variants={variants.third} initial='hidden' animate={control} className='flex-shrink-0 basis-1/3'>
           <YelpReview name='Hank Chen' src='/img/headshot-3.jpg' height='175' width='175' className='rounded-full border-white border-2'>
-            &quot;Some of the best coffee I&apos;ve ever tasted. Great place to study, too.&quot;
+            Whenever I grab a muffin on my way to work, it's always fresh. Same with everything else. They're delicious, too!
           </YelpReview>
         </motion.div>
       </div>
