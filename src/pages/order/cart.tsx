@@ -94,7 +94,7 @@ const Cart = ({ cart }) => {
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
       <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
-      {cart && (
+      {cart.length > 0 && (
         <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
           {/* Item List */}
           <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
@@ -131,7 +131,7 @@ const Cart = ({ cart }) => {
           </section>
         </div>
       )}
-      {cart.length === 0 && (
+      {cart.length < 1 && (
         <>
           <div>Your cart is empty. What, you don't want cookies? Give me your money, or something.</div>
           <div>
