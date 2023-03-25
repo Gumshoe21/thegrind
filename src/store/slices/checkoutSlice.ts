@@ -3,7 +3,6 @@ import { bindActionCreators, createSlice } from '@reduxjs/toolkit'
 import { AppState } from '../index'
 
 export type Address = {
-  label: string
   firstName: string
   lastName: string
   street: string
@@ -16,7 +15,6 @@ export type Address = {
 }
 
 const initialAddressState = {
-  label: '',
   firstName: '',
   lastName: '',
   street: '',
@@ -34,7 +32,6 @@ export interface CheckoutState {
       email: string
     }
     creditCard: {
-      label: string
       cardNumber: string
       nameOnCard: string
       expDate: string
@@ -49,11 +46,9 @@ export interface CheckoutState {
 const initialState: CheckoutState = {
   formData: {
     contactInformation: {
-
     email: '',
     },
     creditCard: {
-      label: '',
       cardNumber: '',
       nameOnCard: '',
       expDate: '',

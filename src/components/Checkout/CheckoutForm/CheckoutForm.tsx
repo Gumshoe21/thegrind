@@ -52,13 +52,15 @@ const CheckoutForm = (props) => {
   async function onSubmit(e) {
     e.preventDefault()
 
-    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout`, {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/checkout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        body: JSON.stringify(formData),
       },
+      body: JSON.stringify(formData),
     })
+    console.log(formData)
+    console.log('onSubmit(e) in CheckoutForm.tsx')
     // router.push(/checkout/confirmation')
   }
 

@@ -9,34 +9,25 @@ export default async function handler(req, res) {
       return
     }
 
+    console.log('REQ.BODY:', req.body)
     const session = await getServerSession(req, res, authOptions)
     //    console.log(session)
 
     let user_id = session?.user?.id
 
-    //let userCart = await Cart.findOne({ user: user_id, status: 'active' })
-
-    /*if (!userCart) {
-    return res.status(404).json({ message: 'User cart not found.' })
-  }*/
+    let userCart = await Cart.findOne({ user: user_id, status: 'active' })
     /*
+    if (!userCart) {
+      return res.status(404).json({ message: 'User cart not found.' })
+    }
+    */
     let newOrder = await Order.create({
       user: session?.user?.id,
       cart: userCart,
-      contactInformation: {
-        email: req.body.contactInformation.email,
-      },
-      creditCard: req.body.creditCard,
-      mailingAddress: req.body.mailingAddress,
-      billingAddress: req.body.billingAddress,
-    })
-*/
-    let newOrder = await Order.create({
-      user: user_id,
-      cart: req.body.cart,
       contactInformation: req.body.contactInformation,
+      deliveryMethod: req.body.deliveryMethod,
       creditCard: req.body.creditCard,
-      shippingAddress: req.body.mailingAddress,
+      shippingAddress: req.body.shippingAddress,
       billingAddress: req.body.billingAddress,
     })
 

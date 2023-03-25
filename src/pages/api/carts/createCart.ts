@@ -8,7 +8,6 @@ connectDB()
 
 export default async function handler(req, res) {
   const session = await getServerSession(req, res, authOptions)
-
   let user_id = session?.user?.id
   try {
     if (req.method !== 'POST') {

@@ -8,16 +8,77 @@ const orderSchema = new mongoose.Schema(
       },
     },
     creditCard: {
-      type: mongoose.Types.ObjectId,
-      ref: 'CreditCard',
+  cardNumber: {
+    type: String,
+  },
+  nameOnCard: {
+    type: String,
+  },
+  expDate: {
+    type: String,
+  },
+  cvc: {
+    type: String,
+  },
+
     },
     shippingAddress: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Address',
+      firstName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      unit: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+      phone: {
+        type: String,
+      },
     },
     billingAddress: {
-      type: mongoose.Types.ObjectId,
-      ref: 'Address',
+      firstName: {
+        type: String,
+      },
+      lastName: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      unit: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      zipCode: {
+        type: String,
+      },
+      phone: {
+        type: String,
+      },
     },
     deliveryMethod: {
       type: String,
