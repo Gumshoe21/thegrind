@@ -8,19 +8,18 @@ const orderSchema = new mongoose.Schema(
       },
     },
     creditCard: {
-  cardNumber: {
-    type: String,
-  },
-  nameOnCard: {
-    type: String,
-  },
-  expDate: {
-    type: String,
-  },
-  cvc: {
-    type: String,
-  },
-
+      cardNumber: {
+        type: String,
+      },
+      nameOnCard: {
+        type: String,
+      },
+      expDate: {
+        type: String,
+      },
+      cvc: {
+        type: String,
+      },
     },
     shippingAddress: {
       firstName: {
