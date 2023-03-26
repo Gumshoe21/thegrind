@@ -1,5 +1,7 @@
 import NextAuth, { DefaultSession } from 'next-auth'
-import { Address, CreditCard } from '@types'
+import { Address, AddressWithoutLabel, CreditCard, CreditCardWithoutLabel } from '@types'
+import mongoose from 'mongoose'
+
 declare module 'next-auth' {
   /**
    * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context

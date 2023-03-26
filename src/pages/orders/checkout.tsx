@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@pages/api/auth/[...nextauth]'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import React,{ useRef }from 'react'
+import React, { useRef } from 'react'
 
 interface IFormHeader {
   children: JSX.Element
@@ -19,19 +19,17 @@ const CheckoutSummaryItem = ({ children }) => {
 }
 
 const Checkout = ({ cart }) => {
+  const router = useRouter()
   const { data: session } = useSession()
 
   const formRef: React.RefObject<HTMLFormElement> = useRef(null)
   async function handleClick(e) {
     e.preventDefault()
     if (formRef.current) {
-
-    formRef.current.requestSubmit()
-    //  console.log(formRef.current)
+      formRef.current.requestSubmit()
     }
 
-    //    formRef.current.dispatchEvent(new Event('submit'))
-    // router.redirect('/checkout/confirmation')
+    //router.push('/orders/confirmation')
   }
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8'>
@@ -68,7 +66,9 @@ const Checkout = ({ cart }) => {
                 <span>${+cart.totalPrice + 5}</span>
               </CheckoutSummaryItem>
             </ul>
-            <button onClick={handleClick} className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'></button>
+            <button onClick={handleClick} className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
+              Complete Purchase
+            </button>
           </div>
         </div>
       </div>
@@ -191,7 +191,6 @@ export async function getServerSideProps(context) {
 
   const { cart } = data
 
-  console.log('cart:::', JSON.stringify(cart))
   return {
     props: {
       cart,

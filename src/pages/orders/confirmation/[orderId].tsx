@@ -6,6 +6,12 @@ const poppins = Poppins({ weight: ['100', '200', '300', '400', '500', '600', '70
 
 import Image from 'next/image'
 
+interface IOrderItem {
+  name: string
+  quantity: number
+  price: number
+  total: number
+}
 function OrderItem() {
   return (
     <div className='flex py-10 space-x-6'>
@@ -62,7 +68,7 @@ function DescriptionItem(props: IDescriptionItem) {
   )
 }
 
-export default function OrderConfirmation() {
+export default function OrderConfirmation(props) {
   return (
     <main className='px-4 pt-16'>
       <div className='mx-auto max-w-3xl pb-8'>
@@ -80,7 +86,7 @@ export default function OrderConfirmation() {
               <DescriptionItem title='Shipping Info'>
                 <address>
                   <span>
-                    <span className='block'>Kristin Watson</span>
+                    <span className='block'>{props.order.shippingAddress.firstName}&nbsp;{props.order.shippingAddress.lastName}</span>
                     <span className='block'>7363 Cynthia Pass</span>
                     <span className='block'>Toronto, ON N3Y 4H8</span>
                   </span>
@@ -139,4 +145,23 @@ function SummaryItem({ title, description }: ISummaryItem) {
       <dd>{description}</dd>
     </div>
   )
+}
+export async function getServerSideProps(context) {
+  const orderId = context?.params?.orderId
+
+  let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/getOrder?orderId=${orderId}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+
+  const data = await res.json()
+
+  let order = { data }
+  return {
+    props: {
+      order: order.data.order,
+    },
+  }
 }

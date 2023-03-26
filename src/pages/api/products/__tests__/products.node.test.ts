@@ -44,7 +44,6 @@ describe('/api/product', () => {
 
   it('Can be retrieved successfully.', async () => {
     const product = await getProduct()
-    console.log(product)
     expect(product).toBeTruthy()
     expect(product).toHaveProperty('pId')
   })

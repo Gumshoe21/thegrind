@@ -18,7 +18,6 @@ export default function NestedModal() {
   }
 
   function handleChange(e) {
-    console.log(e.target.name, e.target.value)
     dispatch(setAddressForm({ ...addressForm, [e.target.name]: e.target.value }))
   }
 
@@ -33,7 +32,6 @@ export default function NestedModal() {
     })
   }
 
-  console.log(addressForm)
   return (
     <Transition appear show={modalIsOpen['addNewAddress']}>
       {/* Set z-index to 51 due to Headless UI Dialogs having a default z-index of 50. 

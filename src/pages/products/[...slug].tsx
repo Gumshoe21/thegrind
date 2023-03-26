@@ -38,7 +38,7 @@ const FilteredProducts = (props: IFilteredProducts) => {
       categoriesStr = categoriesArr.filter((f: string) => f !== e.target.name).join(',')
     }
     // Update the chosen param with the newly-filtered categories.
-    router.push(`/order/categories/chosen&=${categoriesStr}`)
+    router.push(`/products/categories/chosen&=${categoriesStr}`)
   }
 
   return (
@@ -83,7 +83,6 @@ export async function getServerSideProps(context) {
   let categories: {}[] = []
 
   for (let i = 0; i < products.length; i++) {
-    console.log('PRODUCT:', products[i])
     if (!categories.includes(products[i].category)) {
       categories.push(products[i].category)
     }
@@ -91,7 +90,6 @@ export async function getServerSideProps(context) {
 
   products = filterData.join('') === '' ? products : products.filter((p) => filterData.includes(p.category))
 
-  console.log(categories)
   return {
     props: {
       products,

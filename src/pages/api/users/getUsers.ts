@@ -6,7 +6,6 @@ connectDB()
 export default async (req, res) => {
   try {
     if (req.method === 'GET') {
-      // console.log(email, password, firstName, lastName)
 
       const user = await User.find({})
 

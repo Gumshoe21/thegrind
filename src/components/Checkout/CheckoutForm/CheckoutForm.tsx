@@ -52,16 +52,16 @@ const CheckoutForm = (props) => {
   async function onSubmit(e) {
     e.preventDefault()
 
-    const req = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/checkout/checkout`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/checkout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(formData),
     })
-    console.log(formData)
-    console.log('onSubmit(e) in CheckoutForm.tsx')
-    // router.push(/checkout/confirmation')
+    let data = await res.json()
+
+    router.push(`/orders/confirmation/${data.orderId}`)
   }
 
   async function handleSelectedAddress(e) {
@@ -86,7 +86,6 @@ const CheckoutForm = (props) => {
     )
   }
 
-  console.log(formData)
   return (
     <div>
       <div>
@@ -253,10 +252,6 @@ const CheckoutForm = (props) => {
               <Input value={formData?.creditCard?.cvc ?? ''} label='CVC' id='cvc' name='creditCard.cvc' onChange={handleChange} />
             </div>
           </div>
-
-          <button type='submit' className='col-start-4 col-span-9 row-start-1 text-white  border b-2  p-4 rounded-md bg-primary-600 hover:bg-primary-700'>
-            Complete Purchase
-          </button>
         </form>
       </div>
     </div>

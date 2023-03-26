@@ -21,7 +21,6 @@ export default function ProfilePanel() {
                 <div> {a.label}</div>
               ))}
             </p>
-            {console.log(session)}
             <p className='mt-4'>{session?.user?.name}</p>
             <p className='mt-2'>{session?.user?.email}</p>
           </>

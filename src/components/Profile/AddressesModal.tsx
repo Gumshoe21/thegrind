@@ -15,7 +15,6 @@ export default function AddressesModal({ children }) {
   function openModal(k: string) {
     dispatch(setModalIsOpen({ ...modalIsOpen, [k]: true }))
   }
-  console.log(modalIsOpen)
 
   const { data: session } = useSession()
 

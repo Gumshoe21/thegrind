@@ -1,5 +1,4 @@
 export default function inputChangeHandler(e) {
-  // console.log(e.target.value)
   let { name, value } = e.target
   let splitName = name.split('-')
 

@@ -121,7 +121,7 @@ const Cart = ({ cart }) => {
                 </SummaryItem>
               </ul>
               <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
-                <Link href='/checkout'>Checkout</Link>
+                <Link href='/orders/checkout'>Checkout</Link>
               </button>
             </div>
           </section>
@@ -132,7 +132,7 @@ const Cart = ({ cart }) => {
           <div>Your cart is empty. What, you don't want cookies? Give me your money, or something.</div>
           <div>
             <Link
-              href='/order/categories/chosen&='
+              href='/products/categories/chosen&='
               className='underline text-blue-600 hover:text-blue-800 visited:text-purple-600;
 '
             >
@@ -147,8 +147,6 @@ const Cart = ({ cart }) => {
 
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions)
-  // const session = await getSession(context)
-  console.log(session)
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/getCart`, {
     method: 'POST',
     headers: {

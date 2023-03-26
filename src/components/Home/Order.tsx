@@ -13,13 +13,13 @@ const Order = () => {
             <span className='text-2xl md:text-5xl font-medium'>Order Online From Our Bakery</span>
             <div className='flex flex-col sm:flex-row gap-4 md:gap-8'>
               <button className='uppercase font-semibold tracking-[0.2rem] border-2 py-2 px-6 border-white hover:bg-[white] hover:text-[#160F07] transition-all'>
-                <Link href='/order/categories/chosen&=cookies'>Cookies</Link>
+                <Link href='/products/categories/chosen&=cookies'>Cookies</Link>
               </button>
               <button className='uppercase font-semibold tracking-[0.2rem] border-2 py-2 px-6 border-white hover:bg-[white] hover:text-[#160F07] transition-all'>
-                <Link href='/order/categories/chosen&=cakes'>Cakes</Link>
+                <Link href='/products/categories/chosen&=cakes'>Cakes</Link>
               </button>
               <button className='uppercase font-semibold tracking-[0.2rem] border-2 py-2 px-6 border-white hover:bg-[white] hover:text-[#160F07] transition-all'>
-                <Link href='/order/categories/chosen&=cakes'>Pastries</Link>
+                <Link href='/products/categories/chosen&=cakes'>Pastries</Link>
               </button>
             </div>
           </div>

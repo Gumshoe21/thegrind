@@ -9,18 +9,17 @@ export default async function handler(req, res) {
       return
     }
 
-    console.log('REQ.BODY:', req.body)
     const session = await getServerSession(req, res, authOptions)
-    //    console.log(session)
 
     let user_id = session?.user?.id
 
     let userCart = await Cart.findOne({ user: user_id, status: 'active' })
-    /*
-    if (!userCart) {
-      return res.status(404).json({ message: 'User cart not found.' })
+
+    if (userCart) {
+      userCart.status = 'inactive'
+      await userCart.save()
     }
-    */
+
     let newOrder = await Order.create({
       user: session?.user?.id,
       cart: userCart,
@@ -30,10 +29,11 @@ export default async function handler(req, res) {
       shippingAddress: req.body.shippingAddress,
       billingAddress: req.body.billingAddress,
     })
+    let orderId = newOrder._id.toString()
 
     return res.status(200).json({
       message: 'Order created successfully.',
-      order: newOrder,
+      orderId,
     })
   } catch (error) {
     console.log(error)

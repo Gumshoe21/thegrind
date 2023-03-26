@@ -4,8 +4,14 @@ import OrdersPanel from '@profile/OrdersPanel'
 import ProfilePanel from '@profile/ProfilePanel'
 import Image from 'next/image'
 import Link from 'next/link'
+import mongoose from 'mongoose'
+import Order from '@models/orderModel'
+import Cart from '@models/cartModel'
+import { getServerSession } from 'next-auth/next'
+import { authOptions } from './../api/auth/[...nextauth]'
+import connectDB from '@src/connectDB'
 
-export default function Profile() {
+export default function Profile({ orders }) {
   return (
     <Tab.Group vertical>
       <div className='md:flex md:h-[calc(100vh-80px)]'>
@@ -31,10 +37,55 @@ export default function Profile() {
         <div className='flex flex-col flex-1 items-center md:ml-[320px] mt-20'>
           <Tab.Panels className='w-full'>
             <ProfilePanel />
-            <OrdersPanel />
+            <OrdersPanel orders={orders} />
           </Tab.Panels>
         </div>
       </div>
     </Tab.Group>
   )
+}
+
+export async function getServerSideProps(context) {
+  connectDB()
+
+  const session = await getServerSession(context.req, context.res, authOptions)
+
+  let user_id = session?.user?.id
+
+  let userOrders = await Order.find({ user: user_id })
+
+  if (!userOrders) {
+    return {}
+  }
+
+  userOrders = JSON.parse(JSON.stringify(userOrders))
+  /*
+  for (let order of userOrders) {
+    let orderCart = await Cart.findOne({ id: order.cart, status: 'inactive' })
+console.log(orderCart)
+    orderCart = JSON.parse(JSON.stringify(orderCart))
+
+//    console.log(orderCart)
+    if (orderCart) {
+      order.cartItems = orderCart.items
+    }
+  }
+*/
+  console.log(userOrders)
+  const cartPromises = userOrders.map(async (order) => {
+    console.log(order.cart)
+    let orderCart = await Cart.findOne({ _id: order.cart, status: 'inactive' })
+
+    orderCart = JSON.parse(JSON.stringify(orderCart))
+    if (orderCart) {
+      order.cartItems = orderCart.items
+    }
+  })
+  await Promise.all(cartPromises)
+
+  return {
+    props: {
+      orders: userOrders,
+    },
+  }
 }
