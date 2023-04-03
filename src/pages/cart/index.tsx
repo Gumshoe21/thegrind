@@ -65,9 +65,10 @@ const CartItem = (props) => {
             })()}
           </select>
           <div>
-            <span>{props.item}</span>
+            <span>[null]</span>
           </div>
         </div>
+        {/* Delete item button */}
         <div className='flex flex-row justify-end ml-2 py-2'>
           <span>
             <XMarkIcon className='h-4 w-4 '></XMarkIcon>
@@ -98,6 +99,7 @@ const Cart = ({ cart }) => {
         <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
           {/* Item List */}
           <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
+            {/* TODO make this into just item={item} and change the CartItem component above to reflect it */}
             {cart?.items?.map((item) => (
               <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} itemTotal={item.total} />
             ))}
