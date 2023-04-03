@@ -94,43 +94,58 @@ const Cart = ({ cart }) => {
   return (
     <main className='max-w-2xl lg:max-w-7xl mx-auto px-8 lg:px-8 '>
       {/* Main header */}
-      <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
       {cart?.items?.length > 0 && (
-        <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
-          {/* Item List */}
-          <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
-            {/* TODO make this into just item={item} and change the CartItem component above to reflect it */}
-            {cart?.items?.map((item) => (
-              <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} itemTotal={item.total} />
-            ))}
-          </section>
-          {/* Checkout form/button */}
-          <section className='lg:col-span-5 col-span-7 flex flex-col lg:row-start-1 lg:col-start-8 '>
-            <div className='bg-gray-100 flex flex-col justify-center py-8 px-6 rounded-lg'>
-              <header className='font-bold text-lg'>Order Summary</header>
-              <ul className='mt-5'>
-                <SummaryItem>
-                  <span>Subtotal</span>
-                  <span>${cart.totalPrice.toFixed(2)}</span>
-                </SummaryItem>
-                <SummaryItem>
-                  <span>Shipping Estimate</span>
-                  <span>$5.00</span>
-                </SummaryItem>
-                <SummaryItem>
-                  <span>Estimated Total</span>
-                  <span>${(+cart.totalPrice + 5).toFixed(2)}</span>
-                </SummaryItem>
-              </ul>
-              <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
-                <Link href='/orders/checkout'>Checkout</Link>
-              </button>
-            </div>
-          </section>
-        </div>
+        <>
+          <header className='flex flex-col items-start text-4xl'>Shopping Cart</header>
+          <div className='flex flex-col lg:grid lg:grid-cols-12 mt-2 gap-10 '>
+            {/* Item List */}
+            <section className='col-span-7 space-y-8 pr-4 sm:px-4 overflow-y-scroll lg:h-[calc(100vh-150px)]'>
+              {/* TODO make this into just item={item} and change the CartItem component above to reflect it */}
+              {cart?.items?.map((item) => (
+                <CartItem name={item.name} variant={item.variant} price={item.price} quantity={item.quantity} itemTotal={item.total} />
+              ))}
+            </section>
+            {/* Checkout form/button */}
+            <section className='lg:col-span-5 col-span-7 flex flex-col lg:row-start-1 lg:col-start-8 '>
+              <div className='bg-gray-100 flex flex-col justify-center py-8 px-6 rounded-lg'>
+                <header className='font-bold text-lg'>Order Summary</header>
+                <ul className='mt-5'>
+                  <SummaryItem>
+                    <span>Subtotal</span>
+                    <span>${cart.totalPrice.toFixed(2)}</span>
+                  </SummaryItem>
+                  <SummaryItem>
+                    <span>Shipping Estimate</span>
+                    <span>$5.00</span>
+                  </SummaryItem>
+                  <SummaryItem>
+                    <span>Estimated Total</span>
+                    <span>${(+cart.totalPrice + 5).toFixed(2)}</span>
+                  </SummaryItem>
+                </ul>
+                <button className='border b-2 border-primary-700 py-4 px-6 bg-primary-700 text-white mt-10 rounded-md'>
+                  <Link href='/orders/checkout'>Checkout</Link>
+                </button>
+              </div>
+            </section>
+          </div>
+        </>
       )}
       {cart.length < 1 && (
         <>
+          <section className='flex flex-col items-center justify-center '>
+            <h1 className='text-5xl'>Your shopping cart is empty.</h1>
+            <h2 className='text-3xl'>Explore some of our products:</h2>
+            <div className='grid grid-cols-2 grid-rows-2'>
+              <EmptyCartProduct/>
+              <EmptyCartProduct/>
+              <EmptyCartProduct/>
+              <EmptyCartProduct/>
+            </div>
+          </section>
+        </>
+      )}
+      {/*
           <div>Your cart is empty. What, you don't want cookies? Give me your money, or something.</div>
           <div>
             <Link
@@ -141,12 +156,14 @@ const Cart = ({ cart }) => {
               Continue shopping.
             </Link>
           </div>
-        </>
-      )}
+*/}
     </main>
   )
 }
 
+function EmptyCartProduct() {
+  return <div>Item</div>
+}
 export async function getServerSideProps(context) {
   const session = await getServerSession(context.req, context.res, authOptions)
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/carts/getCart`, {
