@@ -1,34 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 12 Hour Study
 
-## Getting Started
+test
 
-First, run the development server:
+![Homepage for The Grind at https://thegrind.vercel.app](./readme/homepage.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## Live Demo
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- https://thegrind.vercel.app
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Summary
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- **_The Grind_** is a studying/productivity app that helps you stay focused and achieve a healthy work-break balance.
+- It is comprised of a customizable Pomodoro timer which allows you to set your study session durations, as well as the durations of your short break and long break. It also lets you set how many study sessions are required before starting the long break (interval adjustment).
+- The app generates weekly bar graph reports that display the amount of time you've studied.
+- Other features include:
+  - A profile page where you can upload and display your social media links.
+  - Volume control and muting.
+  - Dark mode.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Background
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- [Node.js](https://github.com/nodejs/node)
+- [Next.js](https://github.com/nodejs/node)
+- [MongoDB](https://github.com/mongodb/mongo)
+- [React-Redux](https://github.com/reduxjs/react-redux)
+- [Tailwind CSS](https://github.com/chakra-ui/chakra-ui)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Hosting Services
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [Vercel](https://www.render.com) (back-end)
+- [MongoDB Atlas](https://www.mongodb.com/atlas/database) (database)](https://nextjs.org/docs/deployment) for more details.
