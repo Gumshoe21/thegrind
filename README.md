@@ -1,7 +1,5 @@
 # 12 Hour Study
 
-test
-
 ![Homepage for The Grind at https://thegrind.vercel.app](./readme/homepage.png)
 
 ## Live Demo
@@ -10,15 +8,13 @@ test
 
 ## Summary
 
-- **_The Grind_** is a studying/productivity app that helps you stay focused and achieve a healthy work-break balance.
-- It is comprised of a customizable Pomodoro timer which allows you to set your study session durations, as well as the durations of your short break and long break. It also lets you set how many study sessions are required before starting the long break (interval adjustment).
-- The app generates weekly bar graph reports that display the amount of time you've studied.
-- Other features include:
-  - A profile page where you can upload and display your social media links.
-  - Volume control and muting.
-  - Dark mode.
+- _**The Grind**_ is an e-commerce website for a fictional coffee shop & bakery.
+- Features an online delivery system with components such as a products grid, shopping cart, checkout page, order confirmation page, order history, and settings/profile page.
+- Has a landing page featuring Yelp reviews, company mission/biography, hero image, navbar, and footer.
 
 ## Background
+
+This app started out as a simple landing page for a fictional coffee shop & bakery, but has since evolved into a full-fledged e-commerce website. I decided to build an e-commerce app because I thought it would be a good learning exercise, particularly in the domain of front-end web development, as e-commerce websites often feature many different kinds of components.
 
 ## Technologies Used
 
