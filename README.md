@@ -1,4 +1,4 @@
-# 12 Hour Study
+# The Grind
 
 ![Homepage for The Grind at https://thegrind.vercel.app](./readme/homepage.png)
 
