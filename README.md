@@ -19,12 +19,12 @@ This app started out as a simple landing page for a fictional coffee shop & bake
 ## Technologies Used
 
 - [Node.js](https://github.com/nodejs/node)
-- [Next.js](https://github.com/nodejs/node)
+- [Next.js](https://github.com/vercel/next.js)
 - [MongoDB](https://github.com/mongodb/mongo)
 - [React-Redux](https://github.com/reduxjs/react-redux)
-- [Tailwind CSS](https://github.com/chakra-ui/chakra-ui)
+- [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss)
 
 ## Hosting Services
 
-- [Vercel](https://www.render.com) (back-end)
-- [MongoDB Atlas](https://www.mongodb.com/atlas/database) (database)](https://nextjs.org/docs/deployment) for more details.
+- [Vercel](https://www.vercel.com) (back-end)
+- [MongoDB Atlas](https://www.mongodb.com/atlas/database) (database)
